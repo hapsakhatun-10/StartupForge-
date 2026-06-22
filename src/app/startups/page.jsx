@@ -155,7 +155,7 @@ export default function StartupsPage() {
 
                             {/* bottom button */}
                             <Link
-                                href={`/dashboard/founder/startups/${startup._id}`}
+                                href={`/startups/${startup._id}`}
                                 className="mt-5 w-full inline-flex items-center justify-center gap-2 bg-indigo-600 text-white text-sm font-medium py-2.5 rounded-xl hover:bg-indigo-700 transition"
                             >
                                 View

@@ -1,26 +1,39 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Upload, Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { Loader2, Trash2, Upload, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
 
-export default function AddStartupPage() {
+export default function ManageStartupPage() {
+    const { id } = useParams();
     const router = useRouter();
     const { data: session } = useSession();
     const user = session?.user;
-    const [form, setForm] = useState({
-        startup_name: "",
-        industry: "",
-        description: "",
-        funding_stage: "",
-        founder_email: user?.email || "",
-        status: "active",
-    });
+    const [form, setForm] = useState(null);
     const [logo, setLogo] = useState("");
     const [uploading, setUploading] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const [deleting, setDeleting] = useState(false);
     const [error, setError] = useState("");
+
+    useEffect(() => {
+        fetch(`http://localhost:5000/startup/${id}`)
+            .then((r) => r.json())
+            .then((data) => {
+                setForm({
+                    startup_name: data.startup_name || "",
+                    industry: data.industry || "",
+                    description: data.description || "",
+                    funding_stage: data.funding_stage || "",
+                    founder_email: user?.email || data.founder_email || "",
+                    status: data.status || "active",
+                });
+                setLogo(data.logo || "");
+            })
+            .catch(() => setError("Failed to load startup"));
+    }, [id]);
 
     const handleUpload = async (e) => {
         const file = e.target.files[0];
@@ -34,45 +47,79 @@ export default function AddStartupPage() {
                 body: data,
             });
             const json = await res.json();
-            if (json.success) {
-                setLogo(json.data.url);
-            } else {
-                setError("Logo upload failed");
-            }
+            if (json.success) setLogo(json.data.url);
         } catch {
-            setError("Failed to upload logo");
+            setError("Upload failed");
         } finally {
             setUploading(false);
         }
     };
 
-    const handleSubmit = async (e) => {
+    const handleUpdate = async (e) => {
         e.preventDefault();
-        setLoading(true);
+        setSaving(true);
         setError("");
         try {
-            const res = await fetch("http://localhost:5000/startup", {
-                method: "POST",
+            const res = await fetch(`http://localhost:5000/startup/${id}`, {
+                method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ...form, logo }),
             });
             const data = await res.json();
-            if (data.id) {
-                router.push("/dashboard/founder");
-            } else {
-                setError(data.message || "Failed to create startup");
-            }
+            if (res.ok) router.push("/dashboard/founder");
+            else setError(data.message);
         } catch {
-            setError("Something went wrong");
+            setError("Failed to update");
         } finally {
-            setLoading(false);
+            setSaving(false);
         }
     };
 
+    const handleDelete = async () => {
+        if (!confirm("Delete this startup permanently?")) return;
+        setDeleting(true);
+        try {
+            await fetch(`http://localhost:5000/startup/${id}`, { method: "DELETE" });
+            router.push("/dashboard/founder");
+        } catch {
+            setError("Failed to delete");
+        } finally {
+            setDeleting(false);
+        }
+    };
+
+    if (!form) {
+        return (
+            <div className="p-6 sm:p-8">
+                <div className="h-10 w-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+            </div>
+        );
+    }
+
     return (
         <div className="p-6 sm:p-8 max-w-2xl">
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-1">Add Startup</h1>
-            <p className="text-sm text-slate-500 mb-8">Fill in the details to register your startup.</p>
+            <Link
+                href="/dashboard/founder"
+                className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-indigo-600 font-medium mb-6 transition-colors"
+            >
+                <ArrowLeft className="h-4 w-4" />
+                Back to Dashboard
+            </Link>
+
+            <div className="flex items-center justify-between mb-6">
+                <div>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Manage Startup</h1>
+                    <p className="text-sm text-slate-500 mt-1">Update or delete your startup.</p>
+                </div>
+                <button
+                    onClick={handleDelete}
+                    disabled={deleting}
+                    className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white text-sm font-semibold rounded-xl transition-colors"
+                >
+                    {deleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                    Delete
+                </button>
+            </div>
 
             {error && (
                 <div className="mb-6 px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
@@ -80,16 +127,13 @@ export default function AddStartupPage() {
                 </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleUpdate} className="space-y-5">
                 <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1.5">Startup Name</label>
-                    <input
-                        type="text"
-                        required
+                    <input type="text" required
                         value={form.startup_name}
                         onChange={(e) => setForm({ ...form, startup_name: e.target.value })}
                         className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
-                        placeholder="Enter startup name"
                     />
                 </div>
 
@@ -98,7 +142,7 @@ export default function AddStartupPage() {
                     <div className="flex items-center gap-4">
                         <label className="flex items-center gap-2 px-4 py-2.5 border border-slate-300 rounded-xl text-sm text-slate-600 hover:bg-slate-50 cursor-pointer transition-colors">
                             <Upload className="h-4 w-4" />
-                            {uploading ? "Uploading..." : "Upload Logo"}
+                            {uploading ? "Uploading..." : "Change Logo"}
                             <input type="file" accept="image/*" onChange={handleUpload} className="hidden" disabled={uploading} />
                         </label>
                         {uploading && <Loader2 className="h-5 w-5 animate-spin text-indigo-600" />}
@@ -108,48 +152,35 @@ export default function AddStartupPage() {
 
                 <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1.5">Industry</label>
-                    <input
-                        type="text"
-                        required
-                        value={form.industry}
+                    <input type="text" required value={form.industry}
                         onChange={(e) => setForm({ ...form, industry: e.target.value })}
                         className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
-                        placeholder="e.g. Fintech, HealthTech"
                     />
                 </div>
 
                 <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1.5">Description</label>
-                    <textarea
-                        required
-                        rows={3}
-                        value={form.description}
+                    <textarea rows={3} required value={form.description}
                         onChange={(e) => setForm({ ...form, description: e.target.value })}
                         className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 resize-none"
-                        placeholder="Tell us about your startup"
                     />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm font-medium text-slate-700 mb-1.5">Funding Stage</label>
-                        <select
-                            required
-                            value={form.funding_stage}
+                        <select required value={form.funding_stage}
                             onChange={(e) => setForm({ ...form, funding_stage: e.target.value })}
                             className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                         >
-                            <option value="">Select Stage</option>
                             <option value="Idea">Idea</option>
                             <option value="Seed">Seed</option>
                             <option value="Series A">Series A</option>
                         </select>
                     </div>
-
                     <div>
                         <label className="block text-sm font-medium text-slate-700 mb-1.5">Status</label>
-                        <select
-                            value={form.status}
+                        <select value={form.status}
                             onChange={(e) => setForm({ ...form, status: e.target.value })}
                             className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                         >
@@ -162,24 +193,18 @@ export default function AddStartupPage() {
 
                 <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1.5">Founder Email</label>
-                    <input
-                        type="email"
-                        required
-                        value={form.founder_email}
+                    <input type="email" required value={form.founder_email}
                         onChange={(e) => setForm({ ...form, founder_email: e.target.value })}
                         className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm bg-slate-50 text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
-                        placeholder="your@email.com"
                         readOnly
                     />
                 </div>
 
-                <button
-                    type="submit"
-                    disabled={loading || uploading}
+                <button type="submit" disabled={saving || uploading}
                     className="w-full flex items-center justify-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-semibold rounded-xl transition-colors"
                 >
-                    {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-                    {loading ? "Creating..." : "Create Startup"}
+                    {saving && <Loader2 className="h-4 w-4 animate-spin" />}
+                    {saving ? "Saving..." : "Save Changes"}
                 </button>
             </form>
         </div>

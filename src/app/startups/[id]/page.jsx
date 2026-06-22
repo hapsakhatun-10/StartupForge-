@@ -72,7 +72,7 @@ export default function StartupDetailPage() {
                     <h2 className="text-2xl font-bold text-slate-900 mb-2">Startup not found</h2>
                     <p className="text-slate-500 mb-6">This startup doesn&apos;t exist or has been removed.</p>
                     <Link
-href="/dashboard/founder/startups"
+href="/startups"
 className="inline-flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl transition-colors"
                     >
                         <ArrowLeft className="h-4 w-4" />
@@ -88,7 +88,7 @@ className="inline-flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-vio
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
                 {/* back */}
                 <Link
-                    href="/dashboard/founder/startups"
+                    href="/startups"
                     className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-violet-600 font-medium transition-colors mb-8"
                 >
                     <ArrowLeft className="h-4 w-4" />
