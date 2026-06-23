@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { Loader2, ArrowLeft, Send } from "lucide-react";
 import Link from "next/link";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 export default function ApplyPage() {
     const { id } = useParams();
     const router = useRouter();
@@ -16,7 +18,7 @@ export default function ApplyPage() {
     const [success, setSuccess] = useState(false);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/opportunity/${id}`)
+        fetch(`${API}/opportunity/${id}`)
             .then((r) => r.json())
             .then((data) => { setOpportunity(data); setLoading(false); })
             .catch(() => { setLoading(false); setError("Opportunity not found"); });
@@ -27,7 +29,7 @@ export default function ApplyPage() {
         setSubmitting(true);
         setError("");
         try {
-            const res = await fetch("http://localhost:5000/application", {
+            const res = await fetch(`${API}/application`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ...form, Opportunity_id: id }),
@@ -72,8 +74,8 @@ export default function ApplyPage() {
                     <p className="text-sm text-slate-500 mb-6">
                         Your application for <strong>{opportunity.role_title}</strong> has been received.
                     </p>
-                    <Link href="/dashboard/founder/startups"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors"
+                    <Link href="/opportunities"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl transition-colors"
                     >
                         Browse More Opportunities
                     </Link>
@@ -84,11 +86,11 @@ export default function ApplyPage() {
 
     return (
         <div className="max-w-2xl mx-auto px-4 py-10">
-            <Link href="/dashboard/founder/startups"
-                className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-indigo-600 font-medium mb-6 transition-colors"
+            <Link href={`/opportunities/${id}`}
+                className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-violet-600 font-medium mb-6 transition-colors"
             >
                 <ArrowLeft className="h-4 w-4" />
-                Back to opportunities
+                Back to opportunity
             </Link>
 
             <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
