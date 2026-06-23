@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-    LayoutDashboard, Briefcase, ClipboardList, User, Menu, X
+    LayoutDashboard, Briefcase, ClipboardList, User, Heart, Menu, X
 } from "lucide-react";
 import { useState } from "react";
 import { useSession } from "@/lib/auth-client";
@@ -12,6 +12,7 @@ const links = [
     { name: "Overview", href: "/dashboard/collaborator", icon: LayoutDashboard },
     { name: "Browse Opportunities", href: "/dashboard/collaborator/opportunities", icon: Briefcase },
     { name: "My Applications", href: "/dashboard/collaborator/applications", icon: ClipboardList },
+    { name: "Saved Startups", href: "/dashboard/collaborator/saved", icon: Heart },
     { name: "Profile", href: "/dashboard/collaborator/profile", icon: User },
 ];
 
