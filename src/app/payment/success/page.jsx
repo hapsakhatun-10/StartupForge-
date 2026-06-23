@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -8,7 +8,7 @@ import { CheckCircle, ArrowLeft, Loader2, Crown } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-export default function PaymentSuccessPage() {
+function PaymentSuccessContent() {
     const searchParams = useSearchParams();
     const sessionId = searchParams.get("session_id");
     const [status, setStatus] = useState("verifying");
@@ -112,5 +112,17 @@ export default function PaymentSuccessPage() {
                 </motion.div>
             </motion.div>
         </div>
+    );
+}
+
+export default function PaymentSuccessPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-[70vh] flex items-center justify-center">
+                <Loader2 className="h-10 w-10 animate-spin text-violet-600" />
+            </div>
+        }>
+            <PaymentSuccessContent />
+        </Suspense>
     );
 }
