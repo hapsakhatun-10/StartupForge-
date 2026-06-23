@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Briefcase, ClipboardList, Users, Building2, PlusCircle, ArrowUpRight } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function FounderDashboard() {
     const { data: session } = useSession();
@@ -17,9 +18,9 @@ export default function FounderDashboard() {
         async function load() {
             try {
                 const [startupsRes, oppsRes, appsRes] = await Promise.all([
-                    fetch("http://localhost:5000/startup"),
-                    fetch("http://localhost:5000/opportunity"),
-                    fetch("http://localhost:5000/application"),
+                    fetch(`${API}/startup`),
+                    fetch(`${API}/opportunity`),
+                    fetch(`${API}/application`),
                 ]);
                 const startups = await startupsRes.json();
                 const opportunities = await oppsRes.json();

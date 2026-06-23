@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Briefcase, Building2, MapPin, Clock, ExternalLink } from "lucide-react";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 export default function BrowseOpportunities() {
     const [opportunities, setOpportunities] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -11,8 +12,8 @@ export default function BrowseOpportunities() {
 
     useEffect(() => {
         Promise.all([
-            fetch("http://localhost:5000/opportunity").then((r) => r.json()),
-            fetch("http://localhost:5000/startup").then((r) => r.json()),
+            fetch(`${API}/opportunity`).then((r) => r.json()),
+            fetch(`${API}/startup`).then((r) => r.json()),
         ])
             .then(([opps, startups]) => {
                 const startupMap = {};

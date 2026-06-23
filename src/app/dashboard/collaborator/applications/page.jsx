@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ClipboardList, ExternalLink, Building2, Calendar } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 export default function MyApplications() {
     const { data: session } = useSession();
     const email = session?.user?.email || "";
@@ -14,15 +15,15 @@ export default function MyApplications() {
     useEffect(() => {
         async function load() {
             try {
-                const res = await fetch(`http://localhost:5000/application?Applicant_email=${encodeURIComponent(email)}`);
+                const res = await fetch(`${API}/application?Applicant_email=${encodeURIComponent(email)}`);
                 const apps = await res.json();
 
-                const oppRes = await fetch("http://localhost:5000/opportunity");
+                const oppRes = await fetch(`${API}/opportunity`);
                 const opps = await oppRes.json();
                 const oppMap = {};
                 opps.forEach((o) => { oppMap[o._id] = o; });
 
-                const startupRes = await fetch("http://localhost:5000/startup");
+                const startupRes = await fetch(`${API}/startup`);
                 const startups = await startupRes.json();
                 const startupMap = {};
                 startups.forEach((s) => { startupMap[s._id] = s.startup_name || s.name || ""; });

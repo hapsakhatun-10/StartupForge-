@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { PlusCircle, Pencil, Trash2, Loader2, Briefcase } from "lucide-react";
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function OpportunitiesPage() {
     const [opportunities, setOpportunities] = useState([]);
@@ -10,7 +11,7 @@ export default function OpportunitiesPage() {
     const [deleting, setDeleting] = useState(null);
 
     useEffect(() => {
-        fetch("http://localhost:5000/opportunity")
+        fetch(`${API}/opportunity`)
             .then((r) => r.json())
             .then(setOpportunities)
             .catch(() => {})
@@ -21,7 +22,7 @@ export default function OpportunitiesPage() {
         if (!confirm("Delete this opportunity?")) return;
         setDeleting(id);
         try {
-            await fetch(`http://localhost:5000/opportunity/${id}`, { method: "DELETE" });
+            await fetch(`${API}/opportunity/${id}`, { method: "DELETE" });
             setOpportunities((prev) => prev.filter((o) => o._id !== id));
         } catch (e) {
             console.error(e);

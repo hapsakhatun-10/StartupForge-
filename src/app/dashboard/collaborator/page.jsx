@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Briefcase, ClipboardList, CheckCircle, ArrowUpRight } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 export default function CollaboratorDashboard() {
     const { data: session } = useSession();
     const user = session?.user;
@@ -16,7 +17,7 @@ export default function CollaboratorDashboard() {
     useEffect(() => {
         async function load() {
             try {
-                const res = await fetch(`http://localhost:5000/application?Applicant_email=${encodeURIComponent(email)}`);
+                const res = await fetch(`${API}/application?Applicant_email=${encodeURIComponent(email)}`);
                 const apps = await res.json();
                 setStats({
                     total: apps.length,

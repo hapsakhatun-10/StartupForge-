@@ -6,6 +6,7 @@ import { Loader2, ArrowLeft, Send } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 export default function CollabaratorApplyPage() {
     const { id } = useParams();
     const router = useRouter();
@@ -25,7 +26,7 @@ export default function CollabaratorApplyPage() {
     }, [user]);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/opportunity/${id}`)
+        fetch(`${API}/opportunity/${id}`)
             .then((r) => r.json())
             .then((data) => { setOpportunity(data); setLoading(false); })
             .catch(() => { setLoading(false); setError("Opportunity not found"); });
@@ -36,7 +37,7 @@ export default function CollabaratorApplyPage() {
         setSubmitting(true);
         setError("");
         try {
-            const res = await fetch("http://localhost:5000/application", {
+            const res = await fetch(`${API}/application`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ...form, Opportunity_id: id }),

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Building2, PlusCircle, ArrowUpRight } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function FounderStartups() {
     const { data: session } = useSession();
@@ -14,7 +15,7 @@ export default function FounderStartups() {
     useEffect(() => {
         async function load() {
             try {
-                const res = await fetch("http://localhost:5000/startup");
+                const res = await fetch(`${API}/startup`);
                 const all = await res.json();
                 setStartups(all.filter((s) => s.founder_email === user?.email));
             } catch (e) {

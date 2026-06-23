@@ -6,6 +6,7 @@ import { Loader2, Trash2, Upload, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 export default function ManageStartupPage() {
     const { id } = useParams();
     const router = useRouter();
@@ -19,7 +20,7 @@ export default function ManageStartupPage() {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        fetch(`http://localhost:5000/startup/${id}`)
+        fetch(`${API}/startup/${id}`)
             .then((r) => r.json())
             .then((data) => {
                 setForm({
@@ -60,7 +61,7 @@ export default function ManageStartupPage() {
         setSaving(true);
         setError("");
         try {
-            const res = await fetch(`http://localhost:5000/startup/${id}`, {
+            const res = await fetch(`${API}/startup/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ...form, logo }),
@@ -79,7 +80,7 @@ export default function ManageStartupPage() {
         if (!confirm("Delete this startup permanently?")) return;
         setDeleting(true);
         try {
-            await fetch(`http://localhost:5000/startup/${id}`, { method: "DELETE" });
+            await fetch(`${API}/startup/${id}`, { method: "DELETE" });
             router.push("/dashboard/founder");
         } catch {
             setError("Failed to delete");

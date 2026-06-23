@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Loader2, ArrowLeft, Trash2 } from "lucide-react";
 import Link from "next/link";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 export default function UpdateOpportunityPage() {
     const { id } = useParams();
     const router = useRouter();
@@ -14,7 +15,7 @@ export default function UpdateOpportunityPage() {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        fetch(`http://localhost:5000/opportunity/${id}`)
+        fetch(`${API}/opportunity/${id}`)
             .then((r) => r.json())
             .then((data) => {
                 setForm({
@@ -34,7 +35,7 @@ export default function UpdateOpportunityPage() {
         setSaving(true);
         setError("");
         try {
-            const res = await fetch(`http://localhost:5000/opportunity/${id}`, {
+            const res = await fetch(`${API}/opportunity/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(form),
@@ -55,7 +56,7 @@ export default function UpdateOpportunityPage() {
         if (!confirm("Delete this opportunity?")) return;
         setDeleting(true);
         try {
-            await fetch(`http://localhost:5000/opportunity/${id}`, { method: "DELETE" });
+            await fetch(`${API}/opportunity/${id}`, { method: "DELETE" });
             router.push("/dashboard/founder/opportunities");
         } catch {
             setError("Failed to delete");

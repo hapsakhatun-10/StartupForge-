@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Upload, Loader2 } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 export default function AddStartupPage() {
     const router = useRouter();
     const { data: session } = useSession();
@@ -51,7 +52,7 @@ export default function AddStartupPage() {
         setLoading(true);
         setError("");
         try {
-            const res = await fetch("http://localhost:5000/startup", {
+            const res = await fetch(`${API}/startup`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ...form, logo }),

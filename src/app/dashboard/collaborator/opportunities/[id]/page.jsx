@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ArrowLeft, Building2, MapPin, Clock, Send, Calendar } from "lucide-react";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 export default function OpportunityDetail() {
     const { id } = useParams();
     const [opportunity, setOpportunity] = useState(null);
@@ -12,12 +13,12 @@ export default function OpportunityDetail() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/opportunity/${id}`)
+        fetch(`${API}/opportunity/${id}`)
             .then((r) => r.json())
             .then((data) => {
                 setOpportunity(data);
                 if (data.startup_id) {
-                    fetch(`http://localhost:5000/startup/${data.startup_id}`)
+                    fetch(`${API}/startup/${data.startup_id}`)
                         .then((r) => r.json())
                         .then((s) => setStartupName(s.startup_name || s.name || ""))
                         .catch(() => {});
