@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Briefcase, ClipboardList, Users, Building2, PlusCircle, ArrowUpRight } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
+import TeamAnalytics from "@/components/shared/TeamAnalytics";
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function FounderDashboard() {
@@ -122,6 +123,11 @@ export default function FounderDashboard() {
                         <p className="text-xs text-slate-500 mt-1">{card.label}</p>
                     </Link>
                 ))}
+            </div>
+
+            {/* analytics chart */}
+            <div className="mb-10">
+                <TeamAnalytics />
             </div>
 
             {/* my startup section */}
