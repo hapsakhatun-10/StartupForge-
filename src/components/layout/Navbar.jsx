@@ -6,6 +6,7 @@ import { Menu, X, Rocket, LogOut, User } from "lucide-react";
 import { useState } from "react";
 import { useSession, signOut } from "@/lib/auth-client";
 import ThemeToggle from "@/components/shared/ThemeToggle";
+import NotificationBell from "@/components/shared/NotificationBell";
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -67,6 +68,7 @@ export default function Navbar() {
                     {/* Desktop Auth */}
                     <div className="hidden md:flex items-center gap-3">
                         <ThemeToggle />
+                        {user && <NotificationBell />}
                         {user ? (
                             <div className="flex items-center gap-3">
                                 <Link
@@ -160,7 +162,8 @@ export default function Navbar() {
                                 </Link>
                             ))}
 
-                            <div className="flex justify-center pt-2">
+                            <div className="flex justify-center gap-2 pt-2">
+                                {user && <NotificationBell />}
                                 <ThemeToggle />
                             </div>
                             <div className="pt-4 flex flex-col gap-3 border-t border-slate-100 dark:border-slate-700">
