@@ -37,9 +37,24 @@ export default function ApplicationsPage() {
             const enriched = myApps.map((app) => ({
                 ...app,
                 role_title: opps.find((o) => o._id === app.Opportunity_id)?.role_title || "Unknown",
+                matchPercentage: null,
             }));
 
             setApplications(enriched);
+
+            // fetch match % for each application
+            enriched.forEach((app) => {
+                fetch(`${API}/application/match/${app.Opportunity_id}/${app.Applicant_email}`)
+                    .then((r) => r.json())
+                    .then((m) => {
+                        setApplications((prev) =>
+                            prev.map((a) =>
+                                a._id === app._id ? { ...a, matchPercentage: m.matchPercentage } : a
+                            )
+                        );
+                    })
+                    .catch(() => {});
+            });
         } catch (e) {
             console.error(e);
         } finally {
@@ -73,11 +88,11 @@ export default function ApplicationsPage() {
 
     const statusBadge = (status) => {
         const map = {
-            pending: "bg-amber-100 text-amber-700",
-            accepted: "bg-emerald-100 text-emerald-700",
-            rejected: "bg-red-100 text-red-700",
+            pending: "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400",
+            accepted: "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400",
+            rejected: "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400",
         };
-        return map[status] || "bg-slate-100 text-slate-600";
+        return map[status] || "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300";
     };
 
     if (loading) {
@@ -91,22 +106,22 @@ export default function ApplicationsPage() {
     return (
         <div className="p-6 sm:p-8 max-w-5xl">
             <div className="mb-6">
-                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-1">Applications</h1>
-                <p className="text-sm text-slate-500">{applications.length} total applications</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-1">Applications</h1>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{applications.length} total applications</p>
             </div>
 
             {applications.length === 0 ? (
                 <div className="text-center py-20">
-                    <Briefcase className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-slate-700">No applications yet</h3>
-                    <p className="text-sm text-slate-400 mt-1">
+                    <Briefcase className="h-12 w-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-300">No applications yet</h3>
+                    <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">
                         Applications for your opportunities will appear here.
                     </p>
                 </div>
             ) : (
                 <div className="space-y-3">
                     {applications.map((app) => (
-                        <div key={app._id} className="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-sm transition-shadow">
+                        <div key={app._id} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 hover:shadow-sm transition-shadow">
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                                 <div className="min-w-0 flex-1">
                                     <div className="flex items-center gap-3">
@@ -115,23 +130,34 @@ export default function ApplicationsPage() {
                                         >
                                             {app.Status}
                                         </span>
-                                        <span className="text-xs text-slate-400">
+                                        <span className="text-xs text-slate-400 dark:text-slate-500">
                                             {app.applied_at
                                                 ? new Date(app.applied_at).toLocaleDateString()
                                                 : ""}
                                         </span>
                                     </div>
-                                    <h3 className="text-sm font-semibold text-slate-900 mt-2">
+                                    <h3 className="text-sm font-semibold text-slate-900 dark:text-white mt-2">
                                         {app.Applicant_email}
                                     </h3>
-                                    <p className="text-xs text-slate-500 mt-0.5">
+                                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                                         Applied for:{" "}
-                                        <span className="font-medium text-slate-700">
+                                        <span className="font-medium text-slate-700 dark:text-slate-300">
                                             {app.role_title}
                                         </span>
+                                        {app.matchPercentage !== null && (
+                                            <span className={`ml-2 inline-flex items-center px-2 py-0.5 text-[10px] font-bold rounded-full ${
+                                                app.matchPercentage >= 70
+                                                    ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400"
+                                                    : app.matchPercentage >= 40
+                                                    ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
+                                                    : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
+                                            }`}>
+                                                {app.matchPercentage}% match
+                                            </span>
+                                        )}
                                     </p>
                                     {app.Motivation && (
-                                        <p className="text-xs text-slate-600 mt-2 italic line-clamp-2">
+                                        <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 italic line-clamp-2">
                                             &ldquo;{app.Motivation}&rdquo;
                                         </p>
                                     )}
