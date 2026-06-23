@@ -93,7 +93,7 @@ export default function FounderDashboard() {
                     <p className="text-sm text-slate-500 mt-1">Welcome back! Here&apos;s your overview.</p>
                 </div>
                 <Link
-                    href="/dashboard/founder/add-startup"
+                    href="/dashboard/founder/startups/new"
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition-colors"
                 >
                     <PlusCircle className="h-4 w-4" />
@@ -131,7 +131,7 @@ export default function FounderDashboard() {
                         <Building2 className="h-10 w-10 text-slate-300 mx-auto mb-3" />
                         <p className="text-sm text-slate-500 mb-4">You haven&apos;t created any startups yet.</p>
                         <Link
-                            href="/dashboard/founder/add-startup"
+                            href="/dashboard/founder/startups/new"
                             className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition-colors"
                         >
                             <PlusCircle className="h-4 w-4" />
@@ -143,7 +143,7 @@ export default function FounderDashboard() {
                         {stats.startups.map((s) => (
                             <Link
                                 key={s._id}
-                                href={`/dashboard/founder/manage-startup/${s._id}`}
+                                href={`/dashboard/founder/startups/${s._id}`}
                                 className="flex items-center justify-between py-3 group hover:bg-slate-50 -mx-6 px-6 transition-colors"
                             >
                                 <div>
