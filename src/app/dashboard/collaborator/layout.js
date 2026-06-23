@@ -3,22 +3,19 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-    LayoutDashboard, Building2, PlusCircle, Briefcase, ClipboardList, User, Crown, Menu, X
+    LayoutDashboard, Briefcase, ClipboardList, User, Menu, X
 } from "lucide-react";
 import { useState } from "react";
 import { useSession } from "@/lib/auth-client";
 
 const links = [
-    { name: "Overview", href: "/dashboard/founder", icon: LayoutDashboard },
-    { name: "Add Startup", href: "/dashboard/founder/startups/new", icon: PlusCircle },
-    { name: "Startups", href: "/dashboard/founder/startups", icon: Building2 },
-    { name: "Opportunities", href: "/dashboard/founder/opportunities", icon: Briefcase },
-    { name: "Applications", href: "/dashboard/founder/applications", icon: ClipboardList },
-    { name: "Profile", href: "/dashboard/founder/profile", icon: User },
-    { name: "Premium", href: "/dashboard/founder/premium", icon: Crown },
+    { name: "Overview", href: "/dashboard/collaborator", icon: LayoutDashboard },
+    { name: "Browse Opportunities", href: "/dashboard/collaborator/opportunities", icon: Briefcase },
+    { name: "My Applications", href: "/dashboard/collaborator/applications", icon: ClipboardList },
+    { name: "Profile", href: "/dashboard/collaborator/profile", icon: User },
 ];
 
-export default function FounderLayout({ children }) {
+export default function CollaboratorLayout({ children }) {
     const pathname = usePathname();
     const router = useRouter();
     const [open, setOpen] = useState(false);
@@ -40,7 +37,6 @@ export default function FounderLayout({ children }) {
 
     return (
         <div className="min-h-screen flex">
-            {/* mobile toggle */}
             <button
                 onClick={() => setOpen(!open)}
                 className="lg:hidden fixed top-24 left-4 z-50 h-10 w-10 rounded-xl bg-white border border-slate-200 shadow-md flex items-center justify-center"
@@ -48,7 +44,6 @@ export default function FounderLayout({ children }) {
                 {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
 
-            {/* sidebar */}
             <aside
                 className={`fixed lg:sticky top-20 lg:top-20 left-0 z-40 h-[calc(100vh-5rem)] w-64 bg-white border-r border-slate-200 transform transition-transform duration-200 ${open ? "translate-x-0" : "-translate-x-full"
                     } lg:translate-x-0 overflow-y-auto`}
@@ -74,7 +69,6 @@ export default function FounderLayout({ children }) {
                 </nav>
             </aside>
 
-            {/* overlay */}
             {open && (
                 <div
                     className="fixed inset-0 bg-black/20 z-30 lg:hidden"
@@ -82,7 +76,6 @@ export default function FounderLayout({ children }) {
                 />
             )}
 
-            {/* content */}
             <main className="flex-1 min-w-0">
                 {children}
             </main>
