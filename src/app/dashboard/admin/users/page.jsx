@@ -4,17 +4,21 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Users, Ban, CheckCircle, Loader2 } from "lucide-react";
 import Loader from "@/components/shared/Loader";
+import { useSession } from "@/lib/auth-client";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function AdminUsers() {
+    const { data: session } = useSession();
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(null);
 
+    const authHeaders = { headers: { "x-user-email": session?.user?.email || "" } };
+
     const fetchUsers = async () => {
         try {
-            const res = await fetch(`${API}/admin/users`);
+            const res = await fetch(`${API}/admin/users`, authHeaders);
             const data = await res.json();
             setUsers(data);
         } catch (e) {
@@ -24,12 +28,12 @@ export default function AdminUsers() {
         }
     };
 
-    useEffect(() => { fetchUsers(); }, []);
+    useEffect(() => { if (session?.user?.email) fetchUsers(); }, [session]);
 
     const handleBlock = async (id) => {
         setUpdating(id);
         try {
-            await fetch(`${API}/admin/users/${id}/block`, { method: "PATCH" });
+            await fetch(`${API}/admin/users/${id}/block`, { method: "PATCH", ...authHeaders });
             setUsers((prev) => prev.map((u) => (u._id === id ? { ...u, isBlocked: true } : u)));
         } catch (e) {
             console.error(e);
@@ -41,7 +45,7 @@ export default function AdminUsers() {
     const handleUnblock = async (id) => {
         setUpdating(id);
         try {
-            await fetch(`${API}/admin/users/${id}/unblock`, { method: "PATCH" });
+            await fetch(`${API}/admin/users/${id}/unblock`, { method: "PATCH", ...authHeaders });
             setUsers((prev) => prev.map((u) => (u._id === id ? { ...u, isBlocked: false } : u)));
         } catch (e) {
             console.error(e);

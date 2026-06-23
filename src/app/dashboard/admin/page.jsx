@@ -4,15 +4,18 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Users, Building2, Briefcase, DollarSign, Shield } from "lucide-react";
 import Loader from "@/components/shared/Loader";
+import { useSession } from "@/lib/auth-client";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function AdminOverview() {
+    const { data: session } = useSession();
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`${API}/admin/stats`)
+        if (!session?.user?.email) return;
+        fetch(`${API}/admin/stats`, { headers: { "x-user-email": session.user.email } })
             .then((r) => r.json())
             .then((data) => {
                 setStats(data);

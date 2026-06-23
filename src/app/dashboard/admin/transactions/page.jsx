@@ -4,15 +4,18 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { CreditCard, DollarSign } from "lucide-react";
 import Loader from "@/components/shared/Loader";
+import { useSession } from "@/lib/auth-client";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function AdminTransactions() {
+    const { data: session } = useSession();
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`${API}/admin/transactions`)
+        if (!session?.user?.email) return;
+        fetch(`${API}/admin/transactions`, { headers: { "x-user-email": session.user.email } })
             .then((r) => r.json())
             .then((data) => {
                 setTransactions(data);

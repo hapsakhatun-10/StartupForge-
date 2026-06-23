@@ -4,17 +4,21 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Building2, CheckCircle, Trash2, Loader2 } from "lucide-react";
 import Loader from "@/components/shared/Loader";
+import { useSession } from "@/lib/auth-client";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function AdminStartups() {
+    const { data: session } = useSession();
     const [startups, setStartups] = useState([]);
     const [loading, setLoading] = useState(true);
     const [actionId, setActionId] = useState(null);
 
+    const authHeaders = { headers: { "x-user-email": session?.user?.email || "" } };
+
     const fetchStartups = async () => {
         try {
-            const res = await fetch(`${API}/admin/startups`);
+            const res = await fetch(`${API}/admin/startups`, authHeaders);
             const data = await res.json();
             setStartups(data);
         } catch (e) {
@@ -24,12 +28,12 @@ export default function AdminStartups() {
         }
     };
 
-    useEffect(() => { fetchStartups(); }, []);
+    useEffect(() => { if (session?.user?.email) fetchStartups(); }, [session]);
 
     const handleApprove = async (id) => {
         setActionId(id);
         try {
-            await fetch(`${API}/admin/startups/${id}/approve`, { method: "PATCH" });
+            await fetch(`${API}/admin/startups/${id}/approve`, { method: "PATCH", ...authHeaders });
             setStartups((prev) =>
                 prev.map((s) => (s._id === id ? { ...s, status: "active", approved: true } : s))
             );
@@ -44,7 +48,7 @@ export default function AdminStartups() {
         if (!confirm("Remove this startup permanently?")) return;
         setActionId(id);
         try {
-            await fetch(`${API}/admin/startups/${id}`, { method: "DELETE" });
+            await fetch(`${API}/admin/startups/${id}`, { method: "DELETE", ...authHeaders });
             setStartups((prev) => prev.filter((s) => s._id !== id));
         } catch (e) {
             console.error(e);
