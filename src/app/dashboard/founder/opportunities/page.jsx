@@ -2,21 +2,38 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { PlusCircle, Pencil, Trash2, Loader2, Briefcase } from "lucide-react";
+import { Crown, PlusCircle, Pencil, Trash2, Loader2, Briefcase, Sparkles } from "lucide-react";
+import { useSession } from "@/lib/auth-client";
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const FREE_LIMIT = 3;
 
 export default function OpportunitiesPage() {
+    const { data: session } = useSession();
+    const user = session?.user;
     const [opportunities, setOpportunities] = useState([]);
     const [loading, setLoading] = useState(true);
     const [deleting, setDeleting] = useState(null);
+    const [premium, setPremium] = useState(null);
+    const [myCount, setMyCount] = useState(0);
 
     useEffect(() => {
-        fetch(`${API}/opportunity`)
-            .then((r) => r.json())
-            .then(setOpportunities)
-            .catch(() => {})
-            .finally(() => setLoading(false));
-    }, []);
+        if (!user?.email) return;
+        Promise.all([
+            fetch(`${API}/opportunity`).then((r) => r.json()),
+            fetch(`${API}/payment/check/${user.email}`).then((r) => r.json()),
+            fetch(`${API}/startup`).then((r) => r.json()),
+        ])
+            .then(([opps, pay, startups]) => {
+                const data = Array.isArray(opps) ? opps : opps.data || [];
+                setOpportunities(data);
+                setPremium(pay.isPremium);
+                const mine = startups.filter((s) => s.founder_email === user.email);
+                const ids = mine.map((s) => s._id);
+                setMyCount(data.filter((o) => ids.includes(o.startup_id)).length);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
+    }, [user?.email]);
 
     const handleDelete = async (id) => {
         if (!confirm("Delete this opportunity?")) return;
@@ -24,6 +41,7 @@ export default function OpportunitiesPage() {
         try {
             await fetch(`${API}/opportunity/${id}`, { method: "DELETE" });
             setOpportunities((prev) => prev.filter((o) => o._id !== id));
+            setMyCount((c) => c - 1);
         } catch (e) {
             console.error(e);
         } finally {
@@ -39,6 +57,8 @@ export default function OpportunitiesPage() {
         );
     }
 
+    const atLimit = !premium && myCount >= FREE_LIMIT;
+
     return (
         <div className="p-6 sm:p-8 max-w-5xl">
             <div className="flex items-center justify-between gap-4 mb-6">
@@ -47,24 +67,49 @@ export default function OpportunitiesPage() {
                     <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{opportunities.length} opportunities posted</p>
                 </div>
                 <Link
-                    href="/dashboard/founder/opportunities/new"
+                    href={atLimit ? "/dashboard/founder/premium" : "/dashboard/founder/opportunities/new"}
                     className="inline-flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition-colors"
                 >
-                    <PlusCircle className="h-4 w-4" />
-                    Add Opportunity
+                    {atLimit ? <Crown className="h-4 w-4" /> : <PlusCircle className="h-4 w-4" />}
+                    {atLimit ? "Upgrade to Post More" : "Add Opportunity"}
                 </Link>
             </div>
+
+            {atLimit && (
+                <div className="mb-6 px-5 py-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl flex items-start gap-3">
+                    <Sparkles className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+                    <div>
+                        <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">
+                            Free limit reached
+                        </p>
+                        <p className="text-xs text-amber-700 dark:text-amber-400 mt-1">
+                            You&apos;ve used all {FREE_LIMIT} free slots.{" "}
+                            <Link href="/dashboard/founder/premium" className="underline font-medium">
+                                Upgrade to Premium
+                            </Link>{" "}
+                            for unlimited opportunity postings.
+                        </p>
+                    </div>
+                </div>
+            )}
+
+            {premium && (
+                <div className="mb-6 px-4 py-2.5 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl flex items-center gap-2 text-sm text-amber-700 dark:text-amber-300">
+                    <Crown className="h-4 w-4" />
+                    Premium — unlimited posting active
+                </div>
+            )}
 
             {opportunities.length === 0 ? (
                 <div className="text-center py-20">
                     <Briefcase className="h-12 w-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
                     <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">No opportunities yet.</p>
                     <Link
-                        href="/dashboard/founder/opportunities/new"
+                        href={atLimit ? "/dashboard/founder/premium" : "/dashboard/founder/opportunities/new"}
                         className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition-colors"
                     >
-                        <PlusCircle className="h-4 w-4" />
-                        Post Your First Opportunity
+                        {atLimit ? <Crown className="h-4 w-4" /> : <PlusCircle className="h-4 w-4" />}
+                        {atLimit ? "Upgrade to Post" : "Post Your First Opportunity"}
                     </Link>
                 </div>
             ) : (

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { signUp, signIn, authClient } from "@/lib/auth-client";
+import { signUp, signIn } from "@/lib/auth-client";
 import { Loader2, Eye, EyeOff, UserPlus, Check, X } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -15,7 +15,6 @@ export default function RegisterPage() {
         name: "",
         email: "",
         password: "",
-        role: "founder",
     });
     const [image, setImage] = useState("");
     const [uploading, setUploading] = useState(false);
@@ -61,17 +60,12 @@ export default function RegisterPage() {
                 name: form.name,
                 email: form.email,
                 password: form.password,
-                role: form.role,
                 image: image || undefined,
             });
             if (signUpError) {
                 setError(signUpError.message || "Registration failed");
             } else {
-                const { data: session } = await authClient.getSession();
-                const role = session?.user?.role || "founder";
-                router.push(
-                    role === "collaborator" ? "/dashboard/collaborator" : "/dashboard/founder"
-                );
+                router.push("/auth/choose-role");
             }
         } catch {
             setError("Something went wrong");
@@ -79,7 +73,6 @@ export default function RegisterPage() {
             setLoading(false);
         }
     };
-
 
     const Rule = ({ valid, label }) => (
         <div className="flex items-center gap-1.5">
@@ -91,13 +84,6 @@ export default function RegisterPage() {
             <span className={`text-xs ${valid ? "text-emerald-600 dark:text-emerald-400" : "text-slate-400 dark:text-slate-500"}`}>{label}</span>
         </div>
     );
-
-
-
-
-
-
-
 
 
 
@@ -209,26 +195,6 @@ export default function RegisterPage() {
                                 </div>
                             )}
                         </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">I am a</label>
-                            <div className="grid grid-cols-2 gap-3">
-                                {["founder", "collaborator"].map((role) => (
-                                    <button
-                                        type="button"
-                                        key={role}
-                                        onClick={() => setForm({ ...form, role })}
-                                        className={`px-4 py-3 rounded-xl text-sm font-semibold border-2 transition-all ${form.role === role
-                                            ? "border-violet-500 bg-violet-50 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400"
-                                            : "border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-500"
-                                            }`}
-                                    >
-                                        {role === "founder" ? "Founder" : "Collaborator"}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
                         <button
                             type="submit"
                             disabled={loading || uploading}
@@ -254,7 +220,7 @@ export default function RegisterPage() {
 
                     <div className="space-y-3">
                         <button
-                            onClick={() => signIn.social({ provider: "google", callbackURL: "/dashboard" })}
+                            onClick={() => signIn.social({ provider: "google", callbackURL: "/auth/choose-role" })}
                             className="w-full flex items-center justify-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
                         >
                             <svg className="h-4 w-4" viewBox="0 0 24 24">

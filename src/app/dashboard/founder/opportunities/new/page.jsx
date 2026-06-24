@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { Crown, Loader2, ArrowLeft, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const FREE_LIMIT = 3;
 
 export default function AddOpportunityPage() {
     const router = useRouter();
@@ -24,17 +25,39 @@ export default function AddOpportunityPage() {
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(true);
     const [error, setError] = useState("");
+    const [premium, setPremium] = useState(null);
+    const [opportunityCount, setOpportunityCount] = useState(0);
 
     useEffect(() => {
-        fetch(`${API}/startup`)
-            .then((r) => r.json())
-            .then((data) => {
-                const mine = data.filter((s) => s.founder_email === user?.email);
+        if (!user?.email) return;
+        Promise.all([
+            fetch(`${API}/startup`).then((r) => r.json()),
+            fetch(`${API}/payment/check/${user.email}`).then((r) => r.json()),
+        ])
+            .then(([startups, payment]) => {
+                const mine = startups.filter((s) => s.founder_email === user.email);
                 setMyStartups(mine);
-                setFetching(false);
+
+                const isPremium = payment.isPremium;
+                setPremium(isPremium);
+
+                // count founder opportunities
+                const startupIds = mine.map((s) => s._id);
+                fetch(`${API}/opportunity`)
+                    .then((r) => r.json())
+                    .then((opps) => {
+                        const data = Array.isArray(opps) ? opps : opps.data || [];
+                        const count = data.filter((o) => startupIds.includes(o.startup_id)).length;
+                        setOpportunityCount(count);
+                        setFetching(false);
+                    })
+                    .catch(() => setFetching(false));
             })
             .catch(() => setFetching(false));
     }, [user?.email]);
+
+    const atLimit = !premium && opportunityCount >= FREE_LIMIT;
+    const remaining = Math.max(0, FREE_LIMIT - opportunityCount);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -44,7 +67,7 @@ export default function AddOpportunityPage() {
             const res = await fetch(`${API}/opportunity`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
+                body: JSON.stringify({ ...form, founder_email: user?.email }),
             });
             const data = await res.json();
             if (data.id) {
@@ -69,8 +92,46 @@ export default function AddOpportunityPage() {
                 Back to Opportunities
             </Link>
 
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-1">Add Opportunity</h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-8">Post a new opportunity for your startup.</p>
+            <div className="flex items-center justify-between mb-6">
+                <div>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-1">Add Opportunity</h1>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">Post a new opportunity for your startup.</p>
+                </div>
+
+                {!fetching && (
+                    <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ${
+                        premium
+                            ? "bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                            : "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300"
+                    }`}>
+                        {premium ? (
+                            <><Crown className="h-3.5 w-3.5" /> Premium</>
+                        ) : (
+                            <>{remaining} of {FREE_LIMIT} free slots left</>
+                        )}
+                    </div>
+                )}
+            </div>
+
+            {atLimit && (
+                <div className="mb-6 px-5 py-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl">
+                    <div className="flex items-start gap-3">
+                        <Sparkles className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+                        <div>
+                            <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">
+                                Free limit reached
+                            </p>
+                            <p className="text-xs text-amber-700 dark:text-amber-400 mt-1">
+                                You&apos;ve used all {FREE_LIMIT} free slots.{" "}
+                                <Link href="/dashboard/founder/premium" className="underline font-medium">
+                                    Upgrade to Premium
+                                </Link>{" "}
+                                for unlimited opportunity postings.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {error && (
                 <div className="mb-6 px-4 py-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-700 dark:text-red-400">{error}</div>
@@ -162,11 +223,11 @@ export default function AddOpportunityPage() {
                     />
                 </div>
 
-                <button type="submit" disabled={loading}
+                <button type="submit" disabled={loading || atLimit}
                     className="w-full flex items-center justify-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-semibold rounded-xl transition-colors"
                 >
                     {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-                    {loading ? "Creating..." : "Create Opportunity"}
+                    {loading ? "Creating..." : atLimit ? "Upgrade to Post More" : "Create Opportunity"}
                 </button>
             </form>
         </div>

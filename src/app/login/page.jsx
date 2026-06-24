@@ -144,7 +144,7 @@ function LoginForm() {
 
                     <div className="space-y-3">
                         <button
-                            onClick={() => signIn.social({ provider: "google", callbackURL: "/dashboard" })}
+                            onClick={() => signIn.social({ provider: "google", callbackURL: "/auth/choose-role" })}
                             className="w-full flex items-center justify-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
                         >
                             <svg className="h-4 w-4" viewBox="0 0 24 24">

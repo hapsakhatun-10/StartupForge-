@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Briefcase, ClipboardList, Users, Building2, PlusCircle, ArrowUpRight } from "lucide-react";
+import { Crown, Briefcase, ClipboardList, Users, Building2, PlusCircle, ArrowUpRight } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 import TeamAnalytics from "@/components/shared/TeamAnalytics";
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -12,16 +12,18 @@ export default function FounderDashboard() {
     const user = session?.user;
     const [stats, setStats] = useState({ opportunities: 0, applications: 0, accepted: 0, startups: [] });
     const [loading, setLoading] = useState(true);
+    const [premium, setPremium] = useState(false);
 
     const email = user?.email || "";
 
     useEffect(() => {
         async function load() {
             try {
-                const [startupsRes, oppsRes, appsRes] = await Promise.all([
+                const [startupsRes, oppsRes, appsRes, payRes] = await Promise.all([
                     fetch(`${API}/startup`),
                     fetch(`${API}/opportunity`),
                     fetch(`${API}/application`),
+                    email ? fetch(`${API}/payment/check/${email}`).then((r) => r.json()) : null,
                 ]);
                 const startups = await startupsRes.json();
                 const opportunities = await oppsRes.json();
@@ -39,6 +41,8 @@ export default function FounderDashboard() {
                     accepted: myApps.filter((a) => a.Status === "accepted").length,
                     startups: myStartups,
                 });
+
+                if (payRes) setPremium(payRes.isPremium);
             } catch (e) {
                 console.error(e);
             } finally {
@@ -46,7 +50,7 @@ export default function FounderDashboard() {
             }
         }
         load();
-    }, []);
+    }, [email]);
 
     const cards = [
         {
@@ -91,7 +95,15 @@ export default function FounderDashboard() {
         <div className="p-6 sm:p-8 max-w-6xl">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Founder Dashboard</h1>
+                    <div className="flex items-center gap-3">
+                        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Founder Dashboard</h1>
+                        {premium && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-semibold rounded-full">
+                                <Crown className="h-3 w-3" />
+                                Premium
+                            </span>
+                        )}
+                    </div>
                     <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Welcome back! Here&apos;s your overview.</p>
                 </div>
                 <Link
