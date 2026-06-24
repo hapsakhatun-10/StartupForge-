@@ -91,8 +91,8 @@ export default function FounderDashboard() {
         <div className="p-6 sm:p-8 max-w-6xl">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Founder Dashboard</h1>
-                    <p className="text-sm text-slate-500 mt-1">Welcome back! Here&apos;s your overview.</p>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Founder Dashboard</h1>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Welcome back! Here&apos;s your overview.</p>
                 </div>
                 <Link
                     href="/dashboard/founder/startups/new"
@@ -109,7 +109,7 @@ export default function FounderDashboard() {
                     <Link
                         key={card.label}
                         href={card.href}
-                        className="group bg-white rounded-2xl border border-slate-200 p-5 hover:shadow-lg transition-all"
+                        className="group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all"
                     >
                         <div className="flex items-center justify-between mb-4">
                             <div
@@ -117,10 +117,10 @@ export default function FounderDashboard() {
                             >
                                 <card.icon className="h-5 w-5 text-white" />
                             </div>
-                            <ArrowUpRight className="h-4 w-4 text-slate-300 group-hover:text-indigo-500 transition-colors" />
+                            <ArrowUpRight className="h-4 w-4 text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors" />
                         </div>
-                        <p className="text-2xl font-bold text-slate-900">{card.value}</p>
-                        <p className="text-xs text-slate-500 mt-1">{card.label}</p>
+                        <p className="text-2xl font-bold text-slate-900 dark:text-white">{card.value}</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{card.label}</p>
                     </Link>
                 ))}
             </div>
@@ -131,12 +131,12 @@ export default function FounderDashboard() {
             </div>
 
             {/* my startup section */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">My Startups</h2>
+            <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-4">My Startups</h2>
                 {stats.startups.length === 0 ? (
                     <div className="text-center py-10">
-                        <Building2 className="h-10 w-10 text-slate-300 mx-auto mb-3" />
-                        <p className="text-sm text-slate-500 mb-4">You haven&apos;t created any startups yet.</p>
+                        <Building2 className="h-10 w-10 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+                        <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">You haven&apos;t created any startups yet.</p>
                         <Link
                             href="/dashboard/founder/startups/new"
                             className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition-colors"
@@ -146,20 +146,20 @@ export default function FounderDashboard() {
                         </Link>
                     </div>
                 ) : (
-                    <div className="divide-y divide-slate-100">
+                    <div className="divide-y divide-slate-100 dark:divide-slate-700">
                         {stats.startups.map((s) => (
                             <Link
                                 key={s._id}
                                 href={`/dashboard/founder/startups/${s._id}`}
-                                className="flex items-center justify-between py-3 group hover:bg-slate-50 -mx-6 px-6 transition-colors"
+                                className="flex items-center justify-between py-3 group hover:bg-slate-50 dark:hover:bg-slate-800/50 -mx-6 px-6 transition-colors"
                             >
                                 <div>
-                                    <p className="text-sm font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                                    <p className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                                         {s.startup_name}
                                     </p>
-                                    <p className="text-xs text-slate-500">{s.industry || "\u2014"}</p>
+                                    <p className="text-xs text-slate-500 dark:text-slate-400">{s.industry || "\u2014"}</p>
                                 </div>
-                                <ArrowUpRight className="h-4 w-4 text-slate-300 group-hover:text-indigo-500 transition-colors" />
+                                <ArrowUpRight className="h-4 w-4 text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors" />
                             </Link>
                         ))}
                     </div>

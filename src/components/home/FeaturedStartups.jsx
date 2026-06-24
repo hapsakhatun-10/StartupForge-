@@ -24,7 +24,7 @@ export default function FeaturedStartups() {
     }, []);
 
     return (
-        <section className="py-20 sm:py-28 bg-white">
+        <section className="py-20 sm:py-28 bg-white dark:bg-slate-950">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -34,14 +34,14 @@ export default function FeaturedStartups() {
                     className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12"
                 >
                     <div>
-                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-violet-50 text-violet-700 text-xs font-semibold rounded-full mb-4">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-violet-50 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 text-xs font-semibold rounded-full mb-4">
                             <Rocket className="h-3.5 w-3.5" />
                             Featured Startups
                         </div>
-                        <h2 className="text-3xl sm:text-4xl font-black text-slate-900">
-                            Discover <span className="text-violet-600">Innovative</span> Startups
+                        <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
+                            Discover <span className="text-violet-600 dark:text-violet-400">Innovative</span> Startups
                         </h2>
-                        <p className="text-slate-500 mt-2 max-w-xl">
+                        <p className="text-slate-500 dark:text-slate-400 mt-2 max-w-xl">
                             Explore promising startups looking for talented collaborators like you.
                         </p>
                     </div>
@@ -58,7 +58,7 @@ export default function FeaturedStartups() {
                     <Loader text="Loading startups..." />
                 ) : startups.length === 0 ? (
                     <div className="text-center py-12">
-                        <p className="text-slate-400">No startups yet. Be the first!</p>
+                        <p className="text-slate-400 dark:text-slate-500">No startups yet. Be the first!</p>
                     </div>
                 ) : (
                     <motion.div

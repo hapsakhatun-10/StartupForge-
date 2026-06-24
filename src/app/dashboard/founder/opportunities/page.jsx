@@ -43,8 +43,8 @@ export default function OpportunitiesPage() {
         <div className="p-6 sm:p-8 max-w-5xl">
             <div className="flex items-center justify-between gap-4 mb-6">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Opportunities</h1>
-                    <p className="text-sm text-slate-500 mt-1">{opportunities.length} opportunities posted</p>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Opportunities</h1>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{opportunities.length} opportunities posted</p>
                 </div>
                 <Link
                     href="/dashboard/founder/opportunities/new"
@@ -57,8 +57,8 @@ export default function OpportunitiesPage() {
 
             {opportunities.length === 0 ? (
                 <div className="text-center py-20">
-                    <Briefcase className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-                    <p className="text-sm text-slate-500 mb-4">No opportunities yet.</p>
+                    <Briefcase className="h-12 w-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">No opportunities yet.</p>
                     <Link
                         href="/dashboard/founder/opportunities/new"
                         className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition-colors"
@@ -72,19 +72,19 @@ export default function OpportunitiesPage() {
                     {opportunities.map((opp) => (
                         <div
                             key={opp._id}
-                            className="bg-white border border-slate-200 rounded-2xl p-5 flex items-center justify-between gap-4"
+                            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-5 flex items-center justify-between gap-4"
                         >
                             <div className="min-w-0">
-                                <h3 className="font-semibold text-slate-900">{opp.role_title}</h3>
+                                <h3 className="font-semibold text-slate-900 dark:text-white">{opp.role_title}</h3>
                                 <div className="flex flex-wrap gap-2 mt-1.5">
                                     {opp.work_type && (
-                                        <span className="px-2 py-0.5 bg-slate-100 text-slate-600 text-xs rounded-md">{opp.work_type}</span>
+                                        <span className="px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs rounded-md">{opp.work_type}</span>
                                     )}
                                     {opp.commitment_level && (
-                                        <span className="px-2 py-0.5 bg-slate-100 text-slate-600 text-xs rounded-md">{opp.commitment_level}</span>
+                                        <span className="px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs rounded-md">{opp.commitment_level}</span>
                                     )}
                                     {opp.deadline && (
-                                        <span className="px-2 py-0.5 bg-amber-50 text-amber-700 text-xs rounded-md">
+                                        <span className="px-2 py-0.5 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs rounded-md">
                                             Due: {new Date(opp.deadline).toLocaleDateString()}
                                         </span>
                                     )}
@@ -93,14 +93,14 @@ export default function OpportunitiesPage() {
                             <div className="flex items-center gap-2 shrink-0">
                                 <Link
                                     href={`/dashboard/founder/opportunities/${opp._id}/edit`}
-                                    className="flex items-center justify-center h-9 w-9 rounded-xl bg-slate-100 text-slate-600 hover:bg-indigo-100 hover:text-indigo-600 transition-colors"
+                                    className="flex items-center justify-center h-9 w-9 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-indigo-100 hover:text-indigo-600 dark:hover:bg-indigo-900/30 dark:hover:text-indigo-400 transition-colors"
                                 >
                                     <Pencil className="h-4 w-4" />
                                 </Link>
                                 <button
                                     onClick={() => handleDelete(opp._id)}
                                     disabled={deleting === opp._id}
-                                    className="flex items-center justify-center h-9 w-9 rounded-xl bg-slate-100 text-slate-600 hover:bg-red-100 hover:text-red-600 transition-colors disabled:opacity-50"
+                                    className="flex items-center justify-center h-9 w-9 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400 transition-colors disabled:opacity-50"
                                 >
                                     {deleting === opp._id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                                 </button>

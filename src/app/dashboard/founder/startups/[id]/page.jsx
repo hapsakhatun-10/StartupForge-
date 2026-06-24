@@ -101,7 +101,7 @@ export default function ManageStartupPage() {
         <div className="p-6 sm:p-8 max-w-2xl">
             <Link
                 href="/dashboard/founder"
-                className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-indigo-600 font-medium mb-6 transition-colors"
+                className="inline-flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 font-medium mb-6 transition-colors"
             >
                 <ArrowLeft className="h-4 w-4" />
                 Back to Dashboard
@@ -109,8 +109,8 @@ export default function ManageStartupPage() {
 
             <div className="flex items-center justify-between mb-6">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Manage Startup</h1>
-                    <p className="text-sm text-slate-500 mt-1">Update or delete your startup.</p>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Manage Startup</h1>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Update or delete your startup.</p>
                 </div>
                 <button
                     onClick={handleDelete}
@@ -123,25 +123,25 @@ export default function ManageStartupPage() {
             </div>
 
             {error && (
-                <div className="mb-6 px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
+                <div className="mb-6 px-4 py-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-700 dark:text-red-400">
                     {error}
                 </div>
             )}
 
             <form onSubmit={handleUpdate} className="space-y-5">
                 <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Startup Name</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Startup Name</label>
                     <input type="text" required
                         value={form.startup_name}
                         onChange={(e) => setForm({ ...form, startup_name: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                        className="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:bg-slate-700 dark:text-white"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Logo</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Logo</label>
                     <div className="flex items-center gap-4">
-                        <label className="flex items-center gap-2 px-4 py-2.5 border border-slate-300 rounded-xl text-sm text-slate-600 hover:bg-slate-50 cursor-pointer transition-colors">
+                        <label className="flex items-center gap-2 px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition-colors">
                             <Upload className="h-4 w-4" />
                             {uploading ? "Uploading..." : "Change Logo"}
                             <input type="file" accept="image/*" onChange={handleUpload} className="hidden" disabled={uploading} />
@@ -152,27 +152,27 @@ export default function ManageStartupPage() {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Industry</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Industry</label>
                     <input type="text" required value={form.industry}
                         onChange={(e) => setForm({ ...form, industry: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                        className="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:bg-slate-700 dark:text-white"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Description</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
                     <textarea rows={3} required value={form.description}
                         onChange={(e) => setForm({ ...form, description: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 resize-none"
+                        className="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 resize-none dark:bg-slate-700 dark:text-white dark:placeholder-slate-400"
                     />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1.5">Funding Stage</label>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Funding Stage</label>
                         <select required value={form.funding_stage}
                             onChange={(e) => setForm({ ...form, funding_stage: e.target.value })}
-                            className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                            className="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:bg-slate-700 dark:text-white"
                         >
                             <option value="Idea">Idea</option>
                             <option value="Seed">Seed</option>
@@ -180,10 +180,10 @@ export default function ManageStartupPage() {
                         </select>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1.5">Status</label>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Status</label>
                         <select value={form.status}
                             onChange={(e) => setForm({ ...form, status: e.target.value })}
-                            className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                            className="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:bg-slate-700 dark:text-white"
                         >
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
@@ -193,10 +193,10 @@ export default function ManageStartupPage() {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Founder Email</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Founder Email</label>
                     <input type="email" required value={form.founder_email}
                         onChange={(e) => setForm({ ...form, founder_email: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm bg-slate-50 text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                        className="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm bg-slate-50 dark:bg-slate-700 text-slate-500 dark:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                         readOnly
                     />
                 </div>

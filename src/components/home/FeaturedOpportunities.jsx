@@ -34,7 +34,7 @@ export default function FeaturedOpportunities() {
     }, []);
 
     return (
-        <section className="py-20 sm:py-28 bg-slate-50">
+        <section className="py-20 sm:py-28 bg-slate-50 dark:bg-slate-900">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -44,20 +44,20 @@ export default function FeaturedOpportunities() {
                     className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12"
                 >
                     <div>
-                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 text-amber-700 text-xs font-semibold rounded-full mb-4">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-semibold rounded-full mb-4">
                             <Briefcase className="h-3.5 w-3.5" />
                             Open Positions
                         </div>
-                        <h2 className="text-3xl sm:text-4xl font-black text-slate-900">
-                            Find Your <span className="text-amber-600">Next Role</span>
+                        <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
+                            Find Your <span className="text-amber-600 dark:text-amber-400">Next Role</span>
                         </h2>
-                        <p className="text-slate-500 mt-2 max-w-xl">
+                        <p className="text-slate-500 dark:text-slate-400 mt-2 max-w-xl">
                             Browse the latest opportunities from startups actively building their teams.
                         </p>
                     </div>
                     <Link
                         href="/opportunities"
-                        className="inline-flex items-center gap-2 text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors shrink-0"
+                        className="inline-flex items-center gap-2 text-sm font-semibold text-amber-600 hover:text-amber-700 dark:text-amber-400 dark:hover:text-amber-300 transition-colors shrink-0"
                     >
                         View All
                         <ArrowRight className="h-4 w-4" />
@@ -68,7 +68,7 @@ export default function FeaturedOpportunities() {
                     <Loader text="Loading opportunities..." />
                 ) : opportunities.length === 0 ? (
                     <div className="text-center py-12">
-                        <p className="text-slate-400">No opportunities posted yet.</p>
+                        <p className="text-slate-400 dark:text-slate-500">No opportunities posted yet.</p>
                     </div>
                 ) : (
                     <motion.div

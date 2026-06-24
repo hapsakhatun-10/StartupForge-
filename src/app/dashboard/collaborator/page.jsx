@@ -54,8 +54,8 @@ export default function CollaboratorDashboard() {
     return (
         <div className="p-6 sm:p-8 max-w-6xl">
             <div className="mb-8">
-                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Collaborator Dashboard</h1>
-                <p className="text-sm text-slate-500 mt-1">Browse opportunities and track your applications.</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Collaborator Dashboard</h1>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Browse opportunities and track your applications.</p>
             </div>
 
             {loading ? (
@@ -69,7 +69,7 @@ export default function CollaboratorDashboard() {
                             <Link
                                 key={card.label}
                                 href={card.href}
-                                className="group bg-white rounded-2xl border border-slate-200 p-5 hover:shadow-lg transition-all"
+                                className="group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all"
                             >
                                 <div className="flex items-center justify-between mb-4">
                                     <div
@@ -77,10 +77,10 @@ export default function CollaboratorDashboard() {
                                     >
                                         <card.icon className="h-5 w-5 text-white" />
                                     </div>
-                                    <ArrowUpRight className="h-4 w-4 text-slate-300 group-hover:text-indigo-500 transition-colors" />
+                                    <ArrowUpRight className="h-4 w-4 text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors" />
                                 </div>
-                                <p className="text-2xl font-bold text-slate-900">{card.value}</p>
-                                <p className="text-xs text-slate-500 mt-1">{card.label}</p>
+                                <p className="text-2xl font-bold text-slate-900 dark:text-white">{card.value}</p>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{card.label}</p>
                             </Link>
                         ))}
                     </div>
@@ -88,19 +88,19 @@ export default function CollaboratorDashboard() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <Link
                             href="/dashboard/collaborator/opportunities"
-                            className="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition-all group"
+                            className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:shadow-lg transition-all group"
                         >
                             <Briefcase className="h-8 w-8 text-indigo-600 mb-3" />
-                            <h3 className="font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">Browse Opportunities</h3>
-                            <p className="text-sm text-slate-500 mt-1">Find startups looking for collaborators like you.</p>
+                            <h3 className="font-semibold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Browse Opportunities</h3>
+                            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Find startups looking for collaborators like you.</p>
                         </Link>
                         <Link
                             href="/dashboard/collaborator/applications"
-                            className="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition-all group"
+                            className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:shadow-lg transition-all group"
                         >
                             <ClipboardList className="h-8 w-8 text-teal-600 mb-3" />
-                            <h3 className="font-semibold text-slate-900 group-hover:text-teal-600 transition-colors">My Applications</h3>
-                            <p className="text-sm text-slate-500 mt-1">Track your submitted applications and status.</p>
+                            <h3 className="font-semibold text-slate-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">My Applications</h3>
+                            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Track your submitted applications and status.</p>
                         </Link>
                     </div>
                 </>

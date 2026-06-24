@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { signUp, authClient } from "@/lib/auth-client";
+import { signUp, signIn, authClient } from "@/lib/auth-client";
 import { Loader2, Eye, EyeOff, UserPlus, Check, X } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -80,6 +80,7 @@ export default function RegisterPage() {
         }
     };
 
+
     const Rule = ({ valid, label }) => (
         <div className="flex items-center gap-1.5">
             {valid ? (
@@ -87,12 +88,22 @@ export default function RegisterPage() {
             ) : (
                 <X className="h-3 w-3 text-slate-300" />
             )}
-            <span className={`text-xs ${valid ? "text-emerald-600" : "text-slate-400"}`}>{label}</span>
+            <span className={`text-xs ${valid ? "text-emerald-600 dark:text-emerald-400" : "text-slate-400 dark:text-slate-500"}`}>{label}</span>
         </div>
     );
 
+
+
+
+
+
+
+
+
+
+
     return (
-        <div className="min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 py-10 bg-gradient-to-b from-slate-50 to-white">
+        <div className="min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 py-10 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
             <div className="w-full max-w-md">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -103,18 +114,18 @@ export default function RegisterPage() {
                     <div className="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-500 mb-4 shadow-lg">
                         <UserPlus className="h-7 w-7 text-white" />
                     </div>
-                    <h1 className="text-3xl font-black text-slate-900">Create an account</h1>
-                    <p className="text-sm text-slate-500 mt-2">Join StartupForge today</p>
+                    <h1 className="text-3xl font-black text-slate-900 dark:text-white">Create an account</h1>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">Join StartupForge today</p>
                 </motion.div>
 
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.1 }}
-                    className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm"
+                    className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-sm"
                 >
                     {error && (
-                        <div className="mb-5 px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700 flex items-center gap-2">
+                        <div className="mb-5 px-4 py-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-700 dark:text-red-400 flex items-center gap-2">
                             <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
                             {error}
                         </div>
@@ -122,35 +133,35 @@ export default function RegisterPage() {
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1.5">Full Name</label>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Full Name</label>
                             <input
                                 type="text"
                                 required
                                 value={form.name}
                                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                                className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500"
+                                className="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500 dark:bg-slate-700 dark:text-white dark:placeholder-slate-400"
                                 placeholder="John Doe"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Email</label>
                             <input
                                 type="email"
                                 required
                                 value={form.email}
                                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                                className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500"
+                                className="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500 dark:bg-slate-700 dark:text-white dark:placeholder-slate-400"
                                 placeholder="your@email.com"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
                                 Profile Image
                             </label>
                             <div className="flex items-center gap-3">
-                                <label className="flex items-center gap-2 px-4 py-2.5 border border-slate-300 rounded-xl text-sm text-slate-600 hover:bg-slate-50 cursor-pointer transition-colors">
+                                <label className="flex items-center gap-2 px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition-colors">
                                     {uploading ? "Uploading..." : "Upload Image"}
                                     <input
                                         type="file"
@@ -172,20 +183,20 @@ export default function RegisterPage() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Password</label>
                             <div className="relative">
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     required
                                     value={form.password}
                                     onChange={(e) => setForm({ ...form, password: e.target.value })}
-                                    className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500 pr-10"
+                                    className="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500 pr-10 dark:bg-slate-700 dark:text-white dark:placeholder-slate-400"
                                     placeholder="Create a password"
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
                                 >
                                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                 </button>
@@ -200,18 +211,17 @@ export default function RegisterPage() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1.5">I am a</label>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">I am a</label>
                             <div className="grid grid-cols-2 gap-3">
                                 {["founder", "collaborator"].map((role) => (
                                     <button
                                         type="button"
                                         key={role}
                                         onClick={() => setForm({ ...form, role })}
-                                        className={`px-4 py-3 rounded-xl text-sm font-semibold border-2 transition-all ${
-                                            form.role === role
-                                                ? "border-violet-500 bg-violet-50 text-violet-700"
-                                                : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
-                                        }`}
+                                        className={`px-4 py-3 rounded-xl text-sm font-semibold border-2 transition-all ${form.role === role
+                                            ? "border-violet-500 bg-violet-50 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400"
+                                            : "border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-500"
+                                            }`}
                                     >
                                         {role === "founder" ? "Founder" : "Collaborator"}
                                     </button>
@@ -233,9 +243,45 @@ export default function RegisterPage() {
                         </button>
                     </form>
 
-                    <p className="text-center text-sm text-slate-500 mt-6">
+                    <div className="relative my-6">
+                        <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-slate-200 dark:border-slate-700" />
+                        </div>
+                        <div className="relative flex justify-center text-xs uppercase">
+                            <span className="bg-white dark:bg-slate-800 px-3 text-slate-400 dark:text-slate-500 font-medium">or</span>
+                        </div>
+                    </div>
+
+                    <div className="space-y-3">
+                        <button
+                            onClick={() => signIn.social({ provider: "google", callbackURL: "/dashboard" })}
+                            className="w-full flex items-center justify-center gap-2 px-5 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
+                        >
+                            <svg className="h-4 w-4" viewBox="0 0 24 24">
+                                <path
+                                    fill="#4285F4"
+                                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
+                                />
+                                <path
+                                    fill="#34A853"
+                                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                                />
+                                <path
+                                    fill="#FBBC05"
+                                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                                />
+                                <path
+                                    fill="#EA4335"
+                                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                                />
+                            </svg>
+                            Sign up with Google
+                        </button>
+                    </div>
+
+                    <p className="text-center text-sm text-slate-500 dark:text-slate-400 mt-6">
                         Already have an account?{" "}
-                        <Link href="/login" className="text-violet-600 hover:text-violet-700 font-medium">
+                        <Link href="/login" className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 font-medium">
                             Sign in
                         </Link>
                     </p>

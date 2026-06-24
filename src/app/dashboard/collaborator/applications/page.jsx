@@ -50,10 +50,10 @@ export default function MyApplications() {
 
     const statusColor = (status) => {
         switch ((status || "").toLowerCase()) {
-            case "accepted": return "bg-emerald-100 text-emerald-700";
-            case "rejected": return "bg-red-100 text-red-700";
+            case "accepted": return "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400";
+            case "rejected": return "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400";
             case "pending":
-            default: return "bg-amber-100 text-amber-700";
+            default: return "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400";
         }
     };
 
@@ -70,15 +70,15 @@ export default function MyApplications() {
     return (
         <div className="p-6 sm:p-8 max-w-4xl">
             <div className="mb-8">
-                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">My Applications</h1>
-                <p className="text-sm text-slate-500 mt-1">Track your submitted applications.</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">My Applications</h1>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Track your submitted applications.</p>
             </div>
 
             {applications.length === 0 ? (
                 <div className="text-center py-20">
-                    <ClipboardList className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-slate-700">No applications yet</h3>
-                    <p className="text-sm text-slate-400 mt-1">Browse opportunities and apply to one.</p>
+                    <ClipboardList className="h-12 w-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-300">No applications yet</h3>
+                    <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">Browse opportunities and apply to one.</p>
                     <Link
                         href="/dashboard/collaborator/opportunities"
                         className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors"
@@ -89,11 +89,11 @@ export default function MyApplications() {
             ) : (
                 <div className="space-y-3">
                     {applications.map((app) => (
-                        <div key={app._id} className="bg-white rounded-2xl border border-slate-200 p-5 hover:shadow-sm transition-all">
+                        <div key={app._id} className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-sm transition-all">
                             <div className="flex items-start justify-between">
                                 <div>
-                                    <h3 className="font-semibold text-slate-900">{app.role_title}</h3>
-                                    <div className="flex items-center gap-3 mt-1 text-xs text-slate-500">
+                                    <h3 className="font-semibold text-slate-900 dark:text-white">{app.role_title}</h3>
+                                    <div className="flex items-center gap-3 mt-1 text-xs text-slate-500 dark:text-slate-400">
                                         <span className="flex items-center gap-1">
                                             <Building2 className="h-3.5 w-3.5" />
                                             {app.startup_name}
@@ -111,15 +111,15 @@ export default function MyApplications() {
                                     {app.Opportunity_id && (
                                         <Link
                                             href={`/dashboard/collaborator/opportunities/${app.Opportunity_id}`}
-                                            className="h-8 w-8 rounded-lg border border-slate-200 flex items-center justify-center hover:bg-slate-50 transition-colors"
+                                            className="h-8 w-8 rounded-lg border border-slate-200 dark:border-slate-600 flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
                                         >
-                                            <ExternalLink className="h-4 w-4 text-slate-400" />
+                                            <ExternalLink className="h-4 w-4 text-slate-400 dark:text-slate-500" />
                                         </Link>
                                     )}
                                 </div>
                             </div>
                             {app.Motivation && (
-                                <p className="text-xs text-slate-500 mt-3 line-clamp-2">{app.Motivation}</p>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-3 line-clamp-2">{app.Motivation}</p>
                             )}
                         </div>
                     ))}

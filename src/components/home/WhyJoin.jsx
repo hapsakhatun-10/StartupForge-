@@ -36,7 +36,7 @@ const features = [
 
 export default function WhyJoin() {
     return (
-        <section className="py-20 sm:py-28 bg-white">
+        <section className="py-20 sm:py-28 bg-white dark:bg-slate-950">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -45,10 +45,10 @@ export default function WhyJoin() {
                     transition={{ duration: 0.5 }}
                     className="text-center mb-16"
                 >
-                    <h2 className="text-3xl sm:text-4xl font-black text-slate-900">
-                        Why Join <span className="text-violet-600">StartupForge</span>?
+                    <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
+                        Why Join <span className="text-violet-600 dark:text-violet-400">StartupForge</span>?
                     </h2>
-                    <p className="text-slate-500 mt-3 max-w-2xl mx-auto">
+                    <p className="text-slate-500 dark:text-slate-400 mt-3 max-w-2xl mx-auto">
                         Whether you&apos;re a founder with a vision or a collaborator looking for your next challenge,
                         StartupForge gives you the tools to succeed.
                     </p>
@@ -62,15 +62,15 @@ export default function WhyJoin() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: i * 0.15 }}
-                            className="group bg-slate-50 rounded-3xl p-6 hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 transition-all border border-transparent hover:border-slate-200"
+                            className="group bg-slate-50 dark:bg-slate-800 rounded-3xl p-6 hover:bg-white dark:hover:bg-slate-700 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-slate-900/50 transition-all border border-transparent hover:border-slate-200 dark:hover:border-slate-600"
                         >
                             <div
                                 className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-5 shadow-md`}
                             >
                                 <feature.icon className="h-6 w-6 text-white" />
                             </div>
-                            <h3 className="text-lg font-bold text-slate-900 mb-2">{feature.title}</h3>
-                            <p className="text-sm text-slate-500 leading-relaxed">{feature.description}</p>
+                            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{feature.title}</h3>
+                            <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{feature.description}</p>
                         </motion.div>
                     ))}
                 </div>

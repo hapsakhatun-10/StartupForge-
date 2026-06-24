@@ -71,39 +71,39 @@ export default function AdminStartups() {
                         <Building2 className="h-5 w-5 text-white" />
                     </div>
                     <div>
-                        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Manage Startups</h1>
-                        <p className="text-sm text-slate-500 mt-0.5">{startups.length} total startups</p>
+                        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Manage Startups</h1>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{startups.length} total startups</p>
                     </div>
                 </div>
 
-                <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+                <div className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
                             <thead>
-                                <tr className="bg-slate-50 border-b border-slate-200">
-                                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Startup</th>
-                                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Founder</th>
-                                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Industry</th>
-                                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
-                                    <th className="text-right px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
+                                <tr className="bg-slate-50 dark:bg-slate-700/50 border-b border-slate-200 dark:border-slate-700">
+                                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Startup</th>
+                                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Founder</th>
+                                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Industry</th>
+                                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                                    <th className="text-right px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-100">
+                            <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
                                 {startups.map((s) => (
-                                    <tr key={s._id} className="hover:bg-slate-50 transition-colors">
-                                        <td className="px-6 py-4 font-medium text-slate-900">{s.startup_name}</td>
-                                        <td className="px-6 py-4 text-slate-600">{s.founder_email}</td>
-                                        <td className="px-6 py-4 text-slate-600">{s.industry || "\u2014"}</td>
+                                    <tr key={s._id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                                        <td className="px-6 py-4 font-medium text-slate-900 dark:text-white">{s.startup_name}</td>
+                                        <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{s.founder_email}</td>
+                                        <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{s.industry || "\u2014"}</td>
                                         <td className="px-6 py-4">
                                             <span className={`inline-flex items-center gap-1 text-xs font-medium ${
                                                 s.status === "active" || s.approved
-                                                    ? "text-emerald-600"
-                                                    : "text-amber-600"
+                                                    ? "text-emerald-600 dark:text-emerald-400"
+                                                    : "text-amber-600 dark:text-amber-400"
                                             }`}>
                                                 <span className={`w-1.5 h-1.5 rounded-full ${
                                                     s.status === "active" || s.approved
                                                         ? "bg-emerald-500"
-                                                        : "bg-amber-500"
+                                                        : "bg-amber-500 dark:bg-amber-400"
                                                 }`} />
                                                 {s.status === "active" || s.approved ? "Active" : "Pending"}
                                             </span>

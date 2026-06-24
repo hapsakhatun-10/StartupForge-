@@ -2,9 +2,6 @@ import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { bearer } from "better-auth/plugins";
 import { MongoClient } from "mongodb";
-import { admin } from "better-auth/plugins"
-
-
 const client = new MongoClient(process.env.MONGODB_URI);
 
 let db;
@@ -14,6 +11,7 @@ function getDb() {
 }
 
 export const auth = betterAuth({
+    baseURL: process.env.BETTER_AUTH_URL,
     database: mongodbAdapter(getDb()),
     emailAndPassword: { enabled: true },
     socialProviders: {
@@ -27,7 +25,7 @@ export const auth = betterAuth({
         additionalFields: {
             role: {
                 type: "string",
-                required: true,
+                required: false,
                 defaultValue: "founder",
                 input: true,
             },

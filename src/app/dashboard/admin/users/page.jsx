@@ -68,42 +68,42 @@ export default function AdminUsers() {
                         <Users className="h-5 w-5 text-white" />
                     </div>
                     <div>
-                        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Manage Users</h1>
-                        <p className="text-sm text-slate-500 mt-0.5">{users.length} total users</p>
+                        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Manage Users</h1>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{users.length} total users</p>
                     </div>
                 </div>
 
-                <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+                <div className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
                             <thead>
-                                <tr className="bg-slate-50 border-b border-slate-200">
-                                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Name</th>
-                                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Email</th>
-                                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Role</th>
-                                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
-                                    <th className="text-right px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
+                                <tr className="bg-slate-50 dark:bg-slate-700/50 border-b border-slate-200 dark:border-slate-700">
+                                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Name</th>
+                                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Email</th>
+                                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Role</th>
+                                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                                    <th className="text-right px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-100">
+                            <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
                                 {users.map((user) => (
-                                    <tr key={user._id} className="hover:bg-slate-50 transition-colors">
-                                        <td className="px-6 py-4 font-medium text-slate-900">{user.name}</td>
-                                        <td className="px-6 py-4 text-slate-600">{user.email}</td>
+                                    <tr key={user._id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                                        <td className="px-6 py-4 font-medium text-slate-900 dark:text-white">{user.name}</td>
+                                        <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{user.email}</td>
                                         <td className="px-6 py-4">
                                             <span className={`inline-block px-2.5 py-0.5 text-xs font-semibold rounded-full capitalize ${
                                                 user.role === "admin"
-                                                    ? "bg-amber-100 text-amber-700"
+                                                    ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
                                                     : user.role === "founder"
-                                                    ? "bg-violet-100 text-violet-700"
-                                                    : "bg-teal-100 text-teal-700"
+                                                    ? "bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400"
+                                                    : "bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400"
                                             }`}>
                                                 {user.role}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4">
                                             <span className={`inline-flex items-center gap-1 text-xs font-medium ${
-                                                user.isBlocked ? "text-red-600" : "text-emerald-600"
+                                                user.isBlocked ? "text-red-600 dark:text-red-400" : "text-emerald-600 dark:text-emerald-400"
                                             }`}>
                                                 <span className={`w-1.5 h-1.5 rounded-full ${
                                                     user.isBlocked ? "bg-red-500" : "bg-emerald-500"
@@ -114,7 +114,7 @@ export default function AdminUsers() {
                                         <td className="px-6 py-4 text-right">
                                             {user.role !== "admin" && (
                                                 updating === user._id ? (
-                                                    <Loader2 className="h-4 w-4 animate-spin text-slate-400 ml-auto" />
+                                                    <Loader2 className="h-4 w-4 animate-spin text-slate-400 dark:text-slate-500 ml-auto" />
                                                 ) : user.isBlocked ? (
                                                     <button
                                                         onClick={() => handleUnblock(user._id)}

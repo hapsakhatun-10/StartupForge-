@@ -48,7 +48,7 @@ export default function BrowseOpportunitiesPage() {
     if (loading) return <Loader text="Loading opportunities..." />;
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+        <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-950">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -57,10 +57,10 @@ export default function BrowseOpportunitiesPage() {
                 >
                     <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
                         <div>
-                            <h1 className="text-3xl sm:text-4xl font-black text-slate-900">
-                                Browse <span className="text-violet-600">Opportunities</span>
+                            <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
+                                Browse <span className="text-violet-600 dark:text-violet-400">Opportunities</span>
                             </h1>
-                            <p className="text-slate-500 mt-1">
+                            <p className="text-slate-500 dark:text-slate-400 mt-1">
                                 Find the perfect role and join a startup team.
                             </p>
                         </div>
@@ -69,21 +69,21 @@ export default function BrowseOpportunitiesPage() {
                     {/* search + filter */}
                     <div className="flex flex-col sm:flex-row gap-3 mb-8">
                         <div className="relative flex-1">
-                            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-500" />
                             <input
                                 type="text"
                                 placeholder="Search by role or skills..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500"
+                                className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500 dark:text-white dark:placeholder-slate-400"
                             />
                         </div>
                         <div className="relative">
-                            <Filter className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                            <Filter className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-500" />
                             <select
                                 value={workType}
                                 onChange={(e) => setWorkType(e.target.value)}
-                                className="pl-10 pr-8 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500 appearance-none"
+                                className="pl-10 pr-8 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500 appearance-none dark:text-white"
                             >
                                 <option value="">All Work Types</option>
                                 <option value="Remote">Remote</option>
@@ -96,9 +96,9 @@ export default function BrowseOpportunitiesPage() {
 
                 {filtered.length === 0 ? (
                     <div className="text-center py-20">
-                        <Briefcase className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-                        <h3 className="text-lg font-semibold text-slate-700">No opportunities found</h3>
-                        <p className="text-sm text-slate-400 mt-1">
+                        <Briefcase className="h-12 w-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+                        <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-300">No opportunities found</h3>
+                        <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">
                             Try adjusting your search or filters.
                         </p>
                     </div>

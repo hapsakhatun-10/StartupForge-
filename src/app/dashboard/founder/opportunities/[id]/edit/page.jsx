@@ -77,7 +77,7 @@ export default function UpdateOpportunityPage() {
         <div className="p-6 sm:p-8 max-w-2xl">
             <Link
                 href="/dashboard/founder/opportunities"
-                className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-indigo-600 font-medium mb-6 transition-colors"
+                className="inline-flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 font-medium mb-6 transition-colors"
             >
                 <ArrowLeft className="h-4 w-4" />
                 Back to Opportunities
@@ -85,8 +85,8 @@ export default function UpdateOpportunityPage() {
 
             <div className="flex items-center justify-between mb-6">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Edit Opportunity</h1>
-                    <p className="text-sm text-slate-500 mt-1">Update or remove this opportunity.</p>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Edit Opportunity</h1>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Update or remove this opportunity.</p>
                 </div>
                 <button onClick={handleDelete} disabled={deleting}
                     className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white text-sm font-semibold rounded-xl transition-colors"
@@ -97,37 +97,37 @@ export default function UpdateOpportunityPage() {
             </div>
 
             {error && (
-                <div className="mb-6 px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">{error}</div>
+                <div className="mb-6 px-4 py-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-700 dark:text-red-400">{error}</div>
             )}
 
             <form onSubmit={handleUpdate} className="space-y-5">
                 <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Startup ID</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Startup ID</label>
                     <input type="text" required value={form.startup_id}
                         onChange={(e) => setForm({ ...form, startup_id: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                        className="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:bg-slate-700 dark:text-white"
                     />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Role Title</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Role Title</label>
                     <input type="text" required value={form.role_title}
                         onChange={(e) => setForm({ ...form, role_title: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                        className="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:bg-slate-700 dark:text-white"
                     />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Required Skills</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Required Skills</label>
                     <input type="text" required value={form.required_skills}
                         onChange={(e) => setForm({ ...form, required_skills: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                        className="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:bg-slate-700 dark:text-white"
                     />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1.5">Work Type</label>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Work Type</label>
                         <select required value={form.work_type}
                             onChange={(e) => setForm({ ...form, work_type: e.target.value })}
-                            className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                            className="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:bg-slate-700 dark:text-white"
                         >
                             <option value="Remote">Remote</option>
                             <option value="On-site">On-site</option>
@@ -135,10 +135,10 @@ export default function UpdateOpportunityPage() {
                         </select>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1.5">Commitment Level</label>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Commitment Level</label>
                         <select required value={form.commitment_level}
                             onChange={(e) => setForm({ ...form, commitment_level: e.target.value })}
-                            className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                            className="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:bg-slate-700 dark:text-white"
                         >
                             <option value="Full-time">Full-time</option>
                             <option value="Part-time">Part-time</option>
@@ -148,10 +148,10 @@ export default function UpdateOpportunityPage() {
                     </div>
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Deadline</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Deadline</label>
                     <input type="date" required value={form.deadline}
                         onChange={(e) => setForm({ ...form, deadline: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                        className="w-full px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:bg-slate-700 dark:text-white"
                     />
                 </div>
                 <button type="submit" disabled={saving}

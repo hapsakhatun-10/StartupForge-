@@ -36,33 +36,36 @@ export default function AdminLayout({ children }) {
     }
 
     return (
-        <div className="min-h-screen flex bg-slate-50">
+        <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950">
             <button
                 onClick={() => setOpen(!open)}
-                className="lg:hidden fixed top-24 left-4 z-50 h-10 w-10 rounded-xl bg-white border border-slate-200 shadow-md flex items-center justify-center"
+                className="lg:hidden fixed top-24 left-4 z-50 h-10 w-10 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-md flex items-center justify-center"
             >
                 {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
 
             <aside
-                className={`fixed lg:sticky top-20 lg:top-20 left-0 z-40 h-[calc(100vh-5rem)] w-64 bg-white border-r border-slate-200 transform transition-transform duration-200 ${
+                className={`fixed lg:sticky top-20 lg:top-20 left-0 z-40 h-[calc(100vh-5rem)] w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transform transition-transform duration-200 ${
                     open ? "translate-x-0" : "-translate-x-full"
                 } lg:translate-x-0 overflow-y-auto`}
             >
-                <div className="p-4 border-b border-slate-100">
+                <div className="p-4 border-b border-slate-100 dark:border-slate-800">
                     <div className="flex items-center gap-3">
                         <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
                             <Shield className="h-5 w-5 text-white" />
                         </div>
                         <div>
-                            <p className="text-sm font-bold text-slate-900">Admin Panel</p>
-                            <p className="text-[10px] text-slate-500">{user.email}</p>
+                            <p className="text-sm font-bold text-slate-900 dark:text-white">Admin Panel</p>
+                            <p className="text-[10px] text-slate-500 dark:text-slate-400">{user.email}</p>
                         </div>
                     </div>
                 </div>
                 <nav className="p-4 space-y-1">
                     {links.map((link) => {
-                        const active = pathname === link.href || pathname.startsWith(link.href + "/");
+                        const isRootLink = link.href === "/dashboard/admin";
+                        const active = isRootLink
+                            ? pathname === link.href
+                            : pathname === link.href || pathname.startsWith(link.href + "/");
                         return (
                             <Link
                                 key={link.href}
@@ -70,8 +73,8 @@ export default function AdminLayout({ children }) {
                                 onClick={() => setOpen(false)}
                                 className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                                     active
-                                        ? "bg-amber-50 text-amber-700"
-                                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                                        ? "bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
+                                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
                                 }`}
                             >
                                 <link.icon className="h-5 w-5 shrink-0" />

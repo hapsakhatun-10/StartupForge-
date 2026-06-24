@@ -9,10 +9,6 @@ export const authClient = createAuthClient({
         localStorage.setItem("bearer_token", authToken)
       }
     },
-    auth: {
-      type: "Bearer",
-      token: () => localStorage.getItem("bearer_token") || "",
-    },
   },
 })
 
