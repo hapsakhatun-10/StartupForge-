@@ -2,11 +2,15 @@ import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { bearer } from "better-auth/plugins";
 import { MongoClient } from "mongodb";
-const client = new MongoClient(process.env.MONGODB_URI);
 
+let client;
 let db;
+function getClient() {
+    if (!client) client = new MongoClient(process.env.MONGODB_URI);
+    return client;
+}
 function getDb() {
-    if (!db) db = client.db("StartupForge");
+    if (!db) db = getClient().db("StartupForge");
     return db;
 }
 

@@ -1,6 +1,8 @@
 import { auth } from "@/lib/auth";
 import { MongoClient } from "mongodb";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
     const uri = process.env.MONGODB_URI;
     if (!uri) {
