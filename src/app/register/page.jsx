@@ -4,8 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { signUp, signIn } from "@/lib/auth-client";
-import { Loader2, Eye, EyeOff, UserPlus, Check, X } from "lucide-react";
+import { signUp, signIn, updateUser } from "@/lib/auth-client";
+import { Loader2, Eye, EyeOff, UserPlus, Check, X, Rocket, Users } from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -20,6 +20,7 @@ export default function RegisterPage() {
     const [uploading, setUploading] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [role, setRole] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
     const hasMinLength = form.password.length >= 6;
@@ -49,6 +50,10 @@ export default function RegisterPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!role) {
+            setError("Please select a role — Founder or Collaborator");
+            return;
+        }
         if (!hasMinLength || !hasUpperCase || !hasLowerCase) {
             setError("Password does not meet requirements");
             return;
@@ -65,7 +70,10 @@ export default function RegisterPage() {
             if (signUpError) {
                 setError(signUpError.message || "Registration failed");
             } else {
-                router.push("/auth/choose-role");
+                await updateUser({ role });
+                router.push(
+                    role === "collaborator" ? "/dashboard/collaborator" : "/dashboard/founder"
+                );
             }
         } catch {
             setError("Something went wrong");
@@ -165,6 +173,40 @@ export default function RegisterPage() {
                                         className="h-10 w-10 rounded-lg object-cover border"
                                     />
                                 )}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
+                                I want to join as
+                            </label>
+                            <div className="grid grid-cols-2 gap-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setRole("founder")}
+                                    className={`p-4 rounded-xl border-2 text-left transition-all ${
+                                        role === "founder"
+                                            ? "border-violet-500 bg-violet-50 dark:bg-violet-900/20"
+                                            : "border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-600"
+                                    }`}
+                                >
+                                    <Rocket className={`h-6 w-6 mb-2 ${role === "founder" ? "text-violet-600" : "text-slate-400 dark:text-slate-500"}`} />
+                                    <p className="font-semibold text-sm text-slate-900 dark:text-white">Founder</p>
+                                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-tight">Post opportunities &amp; build your team</p>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setRole("collaborator")}
+                                    className={`p-4 rounded-xl border-2 text-left transition-all ${
+                                        role === "collaborator"
+                                            ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20"
+                                            : "border-slate-200 dark:border-slate-700 hover:border-emerald-300 dark:hover:border-emerald-600"
+                                    }`}
+                                >
+                                    <Users className={`h-6 w-6 mb-2 ${role === "collaborator" ? "text-emerald-600" : "text-slate-400 dark:text-slate-500"}`} />
+                                    <p className="font-semibold text-sm text-slate-900 dark:text-white">Collaborator</p>
+                                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-tight">Find startups &amp; apply to roles</p>
+                                </button>
                             </div>
                         </div>
 

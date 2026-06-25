@@ -14,8 +14,9 @@ export default function Navbar() {
     const { data: session } = useSession();
     const user = session?.user;
 
-    const isCollab = user?.role === "collaborator";
-    const dashboardHref = isCollab
+    const dashboardHref = user?.role === "admin"
+        ? "/dashboard/admin"
+        : user?.role === "collaborator"
         ? "/dashboard/collaborator"
         : "/dashboard/founder";
 
@@ -73,8 +74,10 @@ export default function Navbar() {
                             <div className="flex items-center gap-3">
                                 <Link
                                     href={
-                                        isCollab
+                                        user?.role === "collaborator"
                                             ? "/dashboard/collaborator/profile"
+                                            : user?.role === "admin"
+                                            ? "/dashboard/admin"
                                             : "/dashboard/founder/profile"
                                     }
                                     className="flex items-center gap-2"

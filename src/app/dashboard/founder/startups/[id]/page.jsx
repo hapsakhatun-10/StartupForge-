@@ -43,7 +43,7 @@ export default function ManageStartupPage() {
         try {
             const data = new FormData();
             data.append("image", file);
-            const res = await fetch("https://api.imgbb.com/1/upload?key=63c4409f87f4222e2ab8a01484e2457c", {
+            const res = await fetch(`https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_KEY}`, {
                 method: "POST",
                 body: data,
             });

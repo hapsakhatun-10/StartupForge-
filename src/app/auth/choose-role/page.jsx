@@ -14,31 +14,7 @@ export default function ChooseRolePage() {
     const user = session?.user;
 
     useEffect(() => {
-        if (isPending) return;
-        if (!user) {
-            router.replace("/login");
-            return;
-        }
-        if (typeof window !== "undefined" && sessionStorage.getItem("onboarded")) {
-            const target =
-                user.role === "collaborator"
-                    ? "/dashboard/collaborator"
-                    : user.role === "admin"
-                        ? "/dashboard/admin"
-                        : "/dashboard/founder";
-            router.replace(target);
-            return;
-        }
-        if (user.role && user.role !== "founder") {
-            sessionStorage.setItem("onboarded", "true");
-            const target =
-                user.role === "collaborator"
-                    ? "/dashboard/collaborator"
-                    : user.role === "admin"
-                        ? "/dashboard/admin"
-                        : "/dashboard/founder";
-            router.replace(target);
-        }
+        if (!isPending && !user) router.replace("/login");
     }, [user, isPending, router]);
 
     const handleRole = async (role) => {

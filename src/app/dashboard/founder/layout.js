@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
     LayoutDashboard, Building2, PlusCircle, Briefcase, ClipboardList, User, Crown, Menu, X
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "@/lib/auth-client";
 
 const links = [
@@ -25,10 +25,11 @@ export default function FounderLayout({ children }) {
     const { data: session, isPending } = useSession();
     const user = session?.user;
 
-    if (!isPending && !user) {
-        router.push("/login");
-        return null;
-    }
+    useEffect(() => {
+        if (!isPending && (!user || user.role === "admin")) {
+            router.push(user ? "/dashboard/admin" : "/login");
+        }
+    }, [user, isPending, router]);
 
     if (isPending || !user) {
         return (
