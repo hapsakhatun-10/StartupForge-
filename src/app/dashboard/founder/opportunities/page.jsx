@@ -25,10 +25,10 @@ export default function OpportunitiesPage() {
         ])
             .then(([opps, pay, startups]) => {
                 const data = Array.isArray(opps) ? opps : opps.data || [];
-                setOpportunities(data);
-                setPremium(pay.isPremium);
                 const mine = startups.filter((s) => s.founder_email === user.email);
                 const ids = mine.map((s) => s._id);
+                setOpportunities(data.filter((o) => ids.includes(o.startup_id)));
+                setPremium(pay.isPremium);
                 setMyCount(data.filter((o) => ids.includes(o.startup_id)).length);
                 setLoading(false);
             })
@@ -39,7 +39,7 @@ export default function OpportunitiesPage() {
         if (!confirm("Delete this opportunity?")) return;
         setDeleting(id);
         try {
-            await fetch(`${API}/opportunity/${id}`, { method: "DELETE" });
+            await fetch(`${API}/opportunity/${id}?founder_email=${encodeURIComponent(user.email)}`, { method: "DELETE" });
             setOpportunities((prev) => prev.filter((o) => o._id !== id));
             setMyCount((c) => c - 1);
         } catch (e) {

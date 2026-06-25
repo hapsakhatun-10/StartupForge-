@@ -80,7 +80,7 @@ export default function ManageStartupPage() {
         if (!confirm("Delete this startup permanently?")) return;
         setDeleting(true);
         try {
-            await fetch(`${API}/startup/${id}`, { method: "DELETE" });
+            await fetch(`${API}/startup/${id}?founder_email=${encodeURIComponent(user.email)}`, { method: "DELETE" });
             router.push("/dashboard/founder");
         } catch {
             setError("Failed to delete");

@@ -4,11 +4,14 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Loader2, ArrowLeft, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { useSession } from "@/lib/auth-client";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 export default function UpdateOpportunityPage() {
     const { id } = useParams();
     const router = useRouter();
+    const { data: session } = useSession();
+    const user = session?.user;
     const [form, setForm] = useState(null);
     const [saving, setSaving] = useState(false);
     const [deleting, setDeleting] = useState(false);
@@ -20,6 +23,7 @@ export default function UpdateOpportunityPage() {
             .then((data) => {
                 setForm({
                     startup_id: data.startup_id || "",
+                    founder_email: user?.email || "",
                     role_title: data.role_title || "",
                     required_skills: data.required_skills || "",
                     work_type: data.work_type || "",
@@ -28,7 +32,7 @@ export default function UpdateOpportunityPage() {
                 });
             })
             .catch(() => setError("Failed to load opportunity"));
-    }, [id]);
+    }, [id, user?.email]);
 
     const handleUpdate = async (e) => {
         e.preventDefault();
@@ -56,7 +60,7 @@ export default function UpdateOpportunityPage() {
         if (!confirm("Delete this opportunity?")) return;
         setDeleting(true);
         try {
-            await fetch(`${API}/opportunity/${id}`, { method: "DELETE" });
+            await fetch(`${API}/opportunity/${id}?founder_email=${encodeURIComponent(user.email)}`, { method: "DELETE" });
             router.push("/dashboard/founder/opportunities");
         } catch {
             setError("Failed to delete");

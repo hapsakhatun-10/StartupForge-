@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# StartupForge Client
 
-## Getting Started
+Frontend application for StartupForge — a platform that connects startup founders with talented collaborators such as developers, designers, marketers, and product specialists.
 
-First, run the development server:
+## Live Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+**Website:** https://startup-forge-wbdi.vercel.app
+
+---
+
+## Overview
+
+StartupForge helps founders build their teams by posting startup opportunities and enables collaborators to discover, apply for, and track startup positions. The platform also includes an admin panel for managing users, startups, and transactions.
+
+---
+
+## Tech Stack
+
+### Frontend
+
+* Next.js 16 (App Router)
+* React 19
+* Tailwind CSS v4
+* HeroUI v3
+
+### Authentication
+
+* Better Auth
+* Google OAuth
+* Email & Password Authentication
+
+### Integrations
+
+* Stripe Checkout
+* ImgBB Image Upload
+
+### UI & Visualization
+
+* Framer Motion
+* Recharts
+* Lucide React
+* React Icons
+
+---
+
+## Features
+
+### Founder Features
+
+* Create and manage startup profiles
+* Upload startup logos
+* Post and manage opportunities
+* Free users can create up to 3 opportunities
+* Premium users can create unlimited opportunities
+* Review applicant profiles
+* Accept or reject applications
+* View application analytics and statistics
+
+### Collaborator Features
+
+* Browse startups and opportunities
+* Search and filter listings
+* Apply with portfolio and motivation
+* Track application status
+* Bookmark favorite startups
+* Manage profile, skills, bio, and avatar
+
+### Admin Features
+
+* Dashboard overview with statistics
+* User management (block/unblock users)
+* Startup moderation
+* Transaction monitoring
+* Platform analytics and charts
+
+---
+
+## Project Structure
+
+```text
+src/
+├── app/
+│   ├── api/auth/
+│   ├── dashboard/
+│   ├── login/
+│   ├── register/
+│   ├── opportunities/
+│   ├── startups/
+│   └── ...
+│
+├── components/
+│   ├── home/
+│   ├── layout/
+│   └── shared/
+│
+└── lib/
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Author
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Developed as a startup collaboration platform to connect founders with skilled team members and streamline startup team building.
